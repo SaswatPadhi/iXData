@@ -1,3 +1,3 @@
 <?php
-	$PROJECT_NAME = "iXData";
+    $PROJECT_NAME = "iXData";
 ?>
