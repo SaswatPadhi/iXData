@@ -52,7 +52,28 @@
                 </div>
             </div>
         </div>
-
+        <div class="container">
+            <h2 style="border-bottom: solid #ddd 1px;">Registered Courses</h2>
+        <?php
+            require_once("../lib/DB.php");
+            $result = getStudentCourses();
+            $count = 0;
+            while($row = mysql_fetch_array($result)) {
+                if($count == 0)
+                    echo "<div class='row'><div class='span4 offset1'>";
+                else
+                    echo "<div class='span4 offset2'>";
+                echo "<div class='alert alert-info'><h3>" . $row['courseCode'] . "</h3>" . $row['courseName'] . "</div></div>";
+                $count++;
+                if($count == 2) {
+                    echo "</div>";
+                    $count = 0;
+                }
+            }
+            if($count > 0)
+                echo "</div>";
+        ?>
+        </div>
         <!-- Load JS -->
         <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
         <script type="text/javascript" src="../js/bootstrap.min.js"></script>
