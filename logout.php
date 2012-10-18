@@ -1,5 +1,5 @@
 <?php
-	require("./UTILS/AUTH.php");
-	logoutUser();
-	header("Location: ./index.php");
+    require("lib/AUTH.php");
+    logoutUser();
+    ensureLoggedIn("STUDENT");
 ?>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="MySql" database="MySql" >
+	<schema name="iXData" catalogname="iXData" defo="y" >
+		<table name="course" >
+			<column name="courseCode" type="VARCHAR" length="8" jt="12" mandatory="y" />
+			<column name="courseName" type="TEXT" length="65535" jt="-1" mandatory="y" />
+			<index name="pk_course" unique="PRIMARY_KEY" >
+				<column name="courseCode" />
+			</index>
+		</table>
+		<table name="courseHistory" >
+			<column name="courseHistoryCode" type="INT" length="10" jt="4" mandatory="y" unsigned="y" />
+			<column name="courseCode" type="VARCHAR" length="8" jt="12" mandatory="y" />
+			<column name="semester" type="BIT" jt="-7" mandatory="y" />
+			<column name="year" type="YEAR" jt="91" mandatory="y" />
+			<index name="pk_coursehistory" unique="PRIMARY_KEY" >
+				<column name="courseHistoryCode" />
+			</index>
+			<index name="courseCode" unique="UNIQUE" >
+				<column name="courseCode" />
+				<column name="semester" />
+				<column name="year" />
+			</index>
+			<fk name="courseHistory_ibfk_1" to_schema="iXData" to_table="course" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="courseCode" pk="courseCode" />
+			</fk>
+		</table>
+		<table name="courseTaker" >
+			<column name="courseHistoryCode" type="INT" length="10" jt="4" mandatory="y" unsigned="y" />
+			<column name="usernameLDAP" type="VARCHAR" length="256" jt="12" mandatory="y" />
+			<index name="pk_coursetaker" unique="PRIMARY_KEY" >
+				<column name="courseHistoryCode" />
+				<column name="usernameLDAP" />
+			</index>
+			<index name="usernameLDAP" unique="NORMAL" >
+				<column name="usernameLDAP" />
+			</index>
+			<fk name="courseTaker_ibfk_2" to_schema="iXData" to_table="student" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="usernameLDAP" pk="usernameLDAP" />
+			</fk>
+			<fk name="courseTaker_ibfk_1" to_schema="iXData" to_table="courseTeacher" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="courseHistoryCode" pk="courseHistoryCode" />
+			</fk>
+		</table>
+		<table name="courseTeacher" >
+			<column name="usernameLDAP" type="VARCHAR" length="128" jt="12" mandatory="y" />
+			<column name="courseHistoryCode" type="INT" length="10" jt="4" mandatory="y" unsigned="y" />
+			<index name="pk_courseteacher" unique="PRIMARY_KEY" >
+				<column name="courseHistoryCode" />
+				<column name="usernameLDAP" />
+			</index>
+			<index name="usernameLDAP" unique="NORMAL" >
+				<column name="usernameLDAP" />
+			</index>
+			<fk name="courseTeacher_ibfk_2" to_schema="iXData" to_table="instructor" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="usernameLDAP" pk="usernameLDAP" />
+			</fk>
+			<fk name="fk_courseteacher_coursehistory" to_schema="iXData" to_table="courseHistory" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="courseHistoryCode" pk="courseHistoryCode" />
+			</fk>
+		</table>
+		<table name="exercise" >
+			<column name="exerciseCode" type="INT" length="10" jt="4" mandatory="y" unsigned="y" />
+			<column name="createdBy" type="VARCHAR" length="128" jt="12" mandatory="y" />
+			<column name="courseHistoryCode" type="INT" length="10" jt="4" mandatory="y" unsigned="y" />
+			<column name="question" type="TEXT" length="65535" jt="-1" mandatory="y" />
+			<column name="createdOn" type="TIMESTAMP" length="19" jt="93" mandatory="y" >
+				<defo>CURRENT_TIMESTAMP</defo>
+			</column>
+			<column name="maximumMarks" type="SMALLINT" length="5" jt="5" unsigned="y" />
+			<column name="deadlineA" type="TIMESTAMP" length="19" jt="93" />
+			<column name="deadlineB" type="TIMESTAMP" length="19" jt="93" />
+			<column name="deadlineC" type="TIMESTAMP" length="19" jt="93" />
+			<index name="pk_exercise" unique="PRIMARY_KEY" >
+				<column name="exerciseCode" />
+				<column name="courseHistoryCode" />
+			</index>
+			<index name="createdBy" unique="NORMAL" >
+				<column name="createdBy" />
+				<column name="createdOn" />
+			</index>
+			<index name="courseHistoryCode" unique="NORMAL" >
+				<column name="courseHistoryCode" />
+			</index>
+			<fk name="exercise_ibfk_2" to_schema="iXData" to_table="courseTeacher" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="createdBy" pk="usernameLDAP" />
+			</fk>
+			<fk name="exercise_ibfk_1" to_schema="iXData" to_table="courseTeacher" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="courseHistoryCode" pk="courseHistoryCode" />
+			</fk>
+		</table>
+		<table name="instructor" >
+			<column name="usernameLDAP" type="VARCHAR" length="128" jt="12" mandatory="y" />
+			<column name="employeeNumber" type="VARCHAR" length="16" jt="12" mandatory="y" />
+			<column name="realFullName" type="VARCHAR" length="256" jt="12" mandatory="y" />
+			<column name="mailID_GPO" type="VARCHAR" length="256" jt="12" mandatory="y" />
+			<index name="pk_instructor" unique="PRIMARY_KEY" >
+				<column name="usernameLDAP" />
+			</index>
+			<index name="employeeNumber" unique="UNIQUE" >
+				<column name="employeeNumber" />
+				<column name="mailID_GPO" />
+			</index>
+		</table>
+		<table name="student" >
+			<column name="usernameLDAP" type="VARCHAR" length="128" jt="12" mandatory="y" />
+			<column name="employeeNumber" type="VARCHAR" length="16" jt="12" mandatory="y" />
+			<column name="realFullName" type="VARCHAR" length="256" jt="12" mandatory="y" />
+			<column name="mailID_GPO" type="VARCHAR" length="256" jt="12" mandatory="y" />
+			<index name="pk_student" unique="PRIMARY_KEY" >
+				<column name="usernameLDAP" />
+			</index>
+			<index name="employeeNumber" unique="UNIQUE" >
+				<column name="employeeNumber" />
+				<column name="mailID_GPO" />
+			</index>
+		</table>
+		<table name="submission" >
+			<column name="exerciseCode" type="INT" length="10" jt="4" mandatory="y" unsigned="y" />
+			<column name="courseHistoryCode" type="INT" length="10" jt="4" mandatory="y" unsigned="y" />
+			<column name="usernameLDAP" type="VARCHAR" length="128" jt="12" mandatory="y" />
+			<column name="response" type="TEXT" length="65535" jt="-1" mandatory="y" />
+			<column name="submittedOn" type="TIMESTAMP" length="19" jt="93" mandatory="y" >
+				<defo>CURRENT_TIMESTAMP</defo>
+			</column>
+			<index name="exerciseCode" unique="NORMAL" >
+				<column name="exerciseCode" />
+			</index>
+			<index name="courseHistoryCode" unique="NORMAL" >
+				<column name="courseHistoryCode" />
+			</index>
+			<index name="usernameLDAP" unique="NORMAL" >
+				<column name="usernameLDAP" />
+			</index>
+			<fk name="submission_ibfk_3" to_schema="iXData" to_table="exercise" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="courseHistoryCode" pk="courseHistoryCode" />
+			</fk>
+			<fk name="submission_ibfk_1" to_schema="iXData" to_table="courseTaker" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="usernameLDAP" pk="usernameLDAP" />
+			</fk>
+			<fk name="submission_ibfk_2" to_schema="iXData" to_table="exercise" delete_action="CASCADE" update_action="CASCADE" >
+				<fk_column name="exerciseCode" pk="exerciseCode" />
+			</fk>
+		</table>
+	</schema>
+	<connector name="MySql" database="MySql" driver_class="com.mysql.jdbc.Driver" driver_jar="mysql-connector-java-5.1.20-bin.jar" host="10.105.11.85" port="3306" instance="iXData" user="iXData_Project" passwd="aVhEYXRhUGFzcw==" read_only="y" schema_mapping="" />
+	<layout name="iXData" joined_routing="y" >
+		<entity schema="iXData" name="courseHistory" x="33" y="33" />
+		<entity schema="iXData" name="course" x="220" y="33" />
+		<entity schema="iXData" name="courseTeacher" x="33" y="198" />
+		<entity schema="iXData" name="submission" x="594" y="33" />
+		<entity schema="iXData" name="courseTaker" x="407" y="231" />
+		<entity schema="iXData" name="student" x="594" y="209" />
+		<entity schema="iXData" name="instructor" x="220" y="220" />
+		<entity schema="iXData" name="exercise" x="407" y="33" />
+		<group name="student" color="ffffcc" >
+			<entity schema="iXData" name="student" />
+			<entity schema="iXData" name="courseTaker" />
+		</group>
+		<group name="instructor" color="fff8d6" >
+			<entity schema="iXData" name="instructor" />
+			<entity schema="iXData" name="courseTeacher" />
+		</group>
+		<group name="course" color="c4e0f9" >
+			<entity schema="iXData" name="course" />
+			<entity schema="iXData" name="courseHistory" />
+		</group>
+		<group name="exercises" color="c4e0f9" >
+			<entity schema="iXData" name="submission" />
+			<entity schema="iXData" name="exercise" />
+		</group>
+	</layout>
+</project>

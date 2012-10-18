@@ -1,51 +1,23 @@
 <?php
-    require('config.php');
-    include_once "UTILS/AUTH.php";
+    require_once 'config.php';
+    require_once 'lib/AUTH.php';
 
-    $loggedIn = isLoggedIn();
-
-    if($loggedIn) {
-        if($_SESSION['XD_Type'] == 'Student')
-            header("Location: ./student/index.php");
-        else if($_SESSION['XD_Type'] == 'Instructor')
-            header("Location: ./instructor/index.php");
-        else
-            logoutUser();
-    }
+    if(isLoggedIn("S"))         header("Location: student/");
+    else if(isLoggedIn("I"))    header("Location: instructor/");
 ?>
 <!doctype html>
 <html lang="en">
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
-        <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css"/>
-        <style type="text/css">
-            body {
-                padding-top: 60px;
-                padding-bottom: 40px;
-            }
-
-            #login form {
-                padding: 16px;
-                border-radius: 6px;
-                background-color: #EEE;
-                box-shadow: 0px 0px 10px #2F4F4F;
-                -moz-box-shadow: 0px 0px 10px #2F4F4F;
-                -webkit-box-shadow: 0px 0px 10px #2F4F4F;
-            }
-
-            * {
-                font-family: "sans-serif";
-            }
-        </style>
-        <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
-        <script type="text/javascript" src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/font-awesome.css"/>
+        <link rel="stylesheet" type="text/css" href="css/ixdata.css"/>
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
-                    <a href="./" class="brand"><?php echo $PROJECT_NAME; ?></a>
+                    <a href="./" class="brand" style="font-size: 2em;"><b><?php echo $PROJECT_NAME; ?></b></a>
                     <div class="nav-collapse">
                         <ul class="nav">
                             <li><a href="./">123</a></li>
@@ -56,62 +28,51 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="span7" id="description">
-                    <div class="hero-unit" style="height: ">
-                        <h2><?php echo $PROJECT_NAME; ?><h2>
+                <div class="span8">
+                    <div class="hero-unit">
+                        <h1><?php echo $PROJECT_NAME; ?></h1>
+                        <b>An SQL learning tool based on X-Data.</b><br><br>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Pellentesque tortor ipsum, dapibus at congue a, facilisis vel quam. Aliquam vel sapien lectus, sed hendrerit ligula.
+Quisque vel nisl non turpis pharetra facilisis sed vel tortor. Pellentesque tortor ipsum, dapibus at congue a, facilisis vel quam. Aliquam vel sapien lectus, sed hendrerit ligula.
+Yahan pe kuch toh fekna hai!
+                            <br><br>
+                            <a href="" class="btn">Read more about XData...</a>
+                        </p>
                     </div>
                 </div>
-                <div class="span5" id="login">
-                    <form class="form-horizontal" action="./instructor/" method="post">
-                      <div class="control-group">
-                          <h4> Instructor's Login <h4><br>
-                        <label class="control-label" for="iusername">LDAP Username</label>
-                        <div class="controls">
-                          <input type="text" id="iusername" name="iusername" placeholder="LDAP ID">
-                        </div>
-                      </div>
-                      <div class="control-group">
-                        <label class="control-label" for="ipassword">LDAP Password</label>
-                        <div class="controls">
-                          <input type="password" id="ipassword" name="ipassword" placeholder="Password">
-                        </div>
-                      </div>
-                      <div class="control-group">
-                        <div class="controls">
-                          <label class="checkbox">
-                            <input type="checkbox"> Remember me
-                          </label>
-                          <button type="submit" class="btn btn-success">Sign in</button>
-                        </div>
-                      </div>
-                    </form>
-                    <br>
-
-                    <form class="form-horizontal" action="student/index.php" method="post">
-                      <div class="control-group">
-                          <h4> Student's Login <h4><br>
-                        <label class="control-label" for="susername">LDAP Username</label>
-                        <div class="controls">
-                          <input type="text" id="susername" name="susername" placeholder="LDAP ID">
-                        </div>
-                      </div>
-                      <div class="control-group">
-                        <label class="control-label" for="spassword">LDAP Password</label>
-                        <div class="controls">
-                          <input type="password" id="spassword" name="spassword" placeholder="Password">
-                        </div>
-                      </div>
-                      <div class="control-group">
-                        <div class="controls">
-                          <label class="checkbox">
-                            <input type="checkbox"> Remember me
-                          </label>
-                          <button type="submit" class="btn btn-success">Sign in</button>
-                        </div>
-                      </div>
+                <div class="span4">
+                    <center><div class="alert alert-info" id="loginMsg"><b><i class="icon-info-sign icon-large"></i> Please login with IIT-B LDAP to continue.</b></div></center>
+                    <form class="form-horizontal well" name="loginForm">
+                        <fieldset>
+                            <legend>Instructor/Student Login</legend>
+                            <div class="control-group">
+                                <div class="input-prepend">
+                                    <span class="add-on"><i class="icon-user-md"></i></span>
+                                    <input type="text" class="input-xlarge" id="ldapUser" name="ldapUser">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="input-prepend">
+                                    <span class="add-on"><i class="icon-key"></i></span>
+                                    <input type="password" class="input-xlarge" id="ldapPass" name="ldapPass">
+                                </div>
+                            </div>
+                            <br>
+                            <center><button type="submit" class="btn btn-primary"><i class="icon-hand-right"></i> Authenticate</button></center>
+                        </fieldset>
                     </form>
                 </div>
             </div>
+            <hr>
+            <footer>
+                <p>Designed & Created by SSH.<span class="pull-right">&copy; Copyright IIT Bombay, 2012.</span></p>
+            </footer>
         </div>
+
+        <!-- Load JS -->
+        <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/ixdata.js"></script>
     </body>
 </html>
