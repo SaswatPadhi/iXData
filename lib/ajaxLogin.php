@@ -19,7 +19,7 @@
         else
             activateUser($ldapRes['uid'][0], $ldapRes['givenname'][0], "S");
 
-        if(!isMember($ldapRes['uid'][0]))
+        if(!isMember())
             $_SESSION['member'] = false;
     }
 
