@@ -32,7 +32,26 @@
                 </div>
             </div>
         </div>
+		<?php
+			
+			require_once ("../lib/DB.php");
+			$query="SELECT i.usernameLDAP,i.realFullName,cH.courseCode as cCode,c.CourseName as cName FROM instructor as i,courseTeacher as cT,courseHistory as cH,course as c WHERE i.usernameLDAP=cT.usernameLDAP and cT.courseHistoryCode=cH.courseHistoryCode and cH.courseCode=c.courseCode and i.usernameLDAP='".$_SESSION['iXD_UId']."'";
+			echo $query;
+			$result = mysql_query($query);
+			
+			while($row = mysql_fetch_array($result))
+			{
+			echo "<pre>";
+			echo "&lt;p&gt;".$row['cCode'] . " " . $row['cName'];
+			echo "&lt;/p&gt;";
+			echo "</pre>";	
+			
+			echo "<br />";
+			}
 
+
+			mysql_close($con);
+		?>
         <!-- Load JS -->
         <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
         <script type="text/javascript" src="../js/bootstrap.min.js"></script>
