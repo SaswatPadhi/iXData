@@ -2,13 +2,12 @@
     require("../config.php") ;
     require("../lib/AUTH.php");
     ensureLoggedIn("I");
-    if(isset($_SESSION['member'])) {
-        if($_SESSION['member'] == false) {
-            header('Location: register.php');
-            die();
-        }
+    if(!isset($_SESSION['member'])) {
+        header('Location: ./');
+        die();
     }
 ?>
+
 <!doctype html>
 <html lang="en">
     <head>

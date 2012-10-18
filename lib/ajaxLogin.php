@@ -1,4 +1,5 @@
 <?php
+    require_once dirname(__FILE__) .'/DB.php';
     require_once dirname(__FILE__) .'/AUTH.php';
     require_once dirname(__FILE__) .'/LDAP.php';
 
@@ -17,6 +18,9 @@
             activateUser($ldapRes['uid'][0], $ldapRes['givenname'][0], "I");
         else
             activateUser($ldapRes['uid'][0], $ldapRes['givenname'][0], "S");
+
+        if(!isMember($ldapRes['uid'][0]))
+            $_SESSION['member'] = false;
     }
 
     echo json_encode($returnValue);

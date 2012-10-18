@@ -9,18 +9,25 @@
 <html lang="en">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
-        <link rel="stylesheet" type="text/css" href="css/font-awesome.css"/>
         <link rel="stylesheet" type="text/css" href="css/ixdata.css"/>
+        <link rel="stylesheet" type="text/css" href="css/font-awesome.css"/>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
                     <a href="./" class="brand" style="font-size: 2em;"><b><?php echo $PROJECT_NAME; ?></b></a>
-                    <div class="nav-collapse">
+                    <div class="nav-collapse collapse">
                         <ul class="nav">
-                            <li><a href="./">123</a></li>
+                            <li class="active"><a href="./"><i class="icon-home icon-large"></i> Home</a></li>
+                            <li><a href="./"><i class="icon-book icon-large"></i> Courses</a></li>
+                            <li><a href="./"><i class="icon-cogs"></i> About XData</a></li>
                         </ul>
                     </div>
                 </div>
@@ -48,18 +55,17 @@ Yahan pe kuch toh fekna hai!
                             <legend>Instructor/Student Login</legend>
                             <div class="control-group">
                                 <div class="input-prepend">
-                                    <span class="add-on"><i class="icon-user-md"></i></span>
+                                    <span class="add-on"><i class="icon-user-md icon-large"></i></span>
                                     <input type="text" class="input-xlarge" id="ldapUser" name="ldapUser">
                                 </div>
                             </div>
                             <div class="control-group">
                                 <div class="input-prepend">
-                                    <span class="add-on"><i class="icon-key"></i></span>
+                                    <span class="add-on"><i class="icon-key icon-large"></i></span>
                                     <input type="password" class="input-xlarge" id="ldapPass" name="ldapPass">
                                 </div>
                             </div>
-                            <br>
-                            <center><button type="submit" class="btn btn-primary"><i class="icon-hand-right"></i> Authenticate</button></center>
+                            <center><button type="submit" class="btn btn-primary btn-large"><i class="icon-signin"></i> &nbsp; Authenticate</button></center>
                         </fieldset>
                     </form>
                 </div>

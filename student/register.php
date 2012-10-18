@@ -1,14 +1,13 @@
 <?php
     require("../config.php") ;
     require("../lib/AUTH.php");
-    ensureLoggedIn("I");
-    if(isset($_SESSION['member'])) {
-        if($_SESSION['member'] == false) {
-            header('Location: register.php');
-            die();
-        }
+    ensureLoggedIn("S");
+    if(!isset($_SESSION['member'])) {
+        header('Location: ./');
+        die();
     }
 ?>
+
 <!doctype html>
 <html lang="en">
     <head>
@@ -34,7 +33,6 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="active"><a href="./"><i class="icon-home icon-large"></i> Home</a></li>
-                            <li><a href="./"><i class="icon-table icon-large"></i> Stats</a></li>
                             <li><a href="./"><i class="icon-star icon-large"></i> Grades</a></li>
                         </ul>
                         <ul class="nav pull-right">
