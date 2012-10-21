@@ -54,35 +54,33 @@
             </div>
         </div>
         <div class="container">
-            <h2 style="border-bottom: solid #ddd 1px;">Teaching Courses</h2>
-            <form action="add_course.php">
-            <center><button type="submit" class="btn btn-info btn-large"><i class="icon-plus-sign"></i> &nbsp; Add Courses</button></center>
-            </form>
-        <?php 
-            require_once("../lib/DB.php");
-            if(isset($_SESSION['courseCode'])) {
-                echo "<div class='row'><div class='span4 offset1'><div class='alert alert-success'>";
-                echo $_SESSION['courseCode']." is added to your account ! :)";
-                echo "</div></div></div>";
-                unset($_SESSION['courseCode']); 
-            }                   
-            $result = getInstructorCourses();
-            $count = 0;
-            while($row = mysql_fetch_array($result)) {
-                if($count == 0)
-                    echo "<div class='row'><div class='span4 offset1'>";
-                else
-                    echo "<div class='span4 offset2'>";
-                echo "<div class='alert alert-info'><h3>" . $row['cCode'] . "</h3>" . $row['cName'] . "</div></div>";
-                $count++;
-                if($count == 2) {
-                    echo "</div>";
-                    $count = 0;
-                }
-            }
-            if($count > 0)
-                echo "</div>";
-        ?>
+            <form class="form-horizontal well" action="added.php" method="post">
+                        <fieldset>
+                            <legend>Add Courses</legend>
+                            <div class="control-group">
+                                <div class="input-prepend">
+                                    <span class="add-on"><i class="icon-key icon-large"></i>&nbsp;&nbsp;Course Code:</span>
+                                    <input type="text" class="input-xlarge" id="courseCode" name="courseCode">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="input-prepend">
+                                    <span class="add-on"><i class="icon-hand-right icon-large"></i>&nbsp;&nbsp;Course Name:</span>
+                                    <input type="text" class="input-xlarge" id="courseName" name="courseName">
+                                </div>
+                            </div>
+                            <?php
+                                require_once("../lib/DB.php");
+                                if(isset($_SESSION['courseCode'])) {
+                                echo "<div class='row'><div class='span4 offset1'><div class='alert alert-error'><i class='icon-minus-sign icon-large'></i> ";
+                                echo $_SESSION['courseCode']." already Exist.";
+                                echo "</div></div></div>";
+                                unset($_SESSION['courseCode']);
+                                }
+                            ?>
+                            <center><button type="submit" class="btn btn-primary btn-large"><i class="icon-signin"></i> &nbsp; Add</button></center>
+                        </fieldset>
+                    </form>
         </div>
         <!-- Load JS -->
         <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
