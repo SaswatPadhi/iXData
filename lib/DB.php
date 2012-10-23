@@ -36,5 +36,25 @@
         return mysql_query(sprintf($query, $CHC, $UID));
     }
     
+    function maxHistoryCode() {
+        $query = "SELECT max(courseHistoryCode) as maxCHC FROM courseHistory";
+        return mysql_query($query);
+    }
+    
+    function maxStudentNumber() {
+        $query = "SELECT max(employeeNumber) as maxSN FROM student";
+        return mysql_query($query);
+    }
+    
+    function insertStudentInfo($EN, $UID, $FN, $MAIL) {
+        $query = "INSERT INTO student VALUES('%s', '%s', '%s', '%s')";
+        return mysql_query(sprintf($query, $EN, $UID, $FN, $MAIL));
+    }
+    
+    function insertStudentCourse($CHC, $UID) {
+        $query = "INSERT INTO courseTaker VALUES(%d, '%s')";
+        return mysql_query(sprintf($query, $CHC, $UID));
+    }
+    
     
     

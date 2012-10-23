@@ -16,6 +16,32 @@
         <link rel="stylesheet" type="text/css" href="../css/ixdata.css"/>
         <link rel="stylesheet" type="text/css" href="../css/font-awesome.css"/>
         <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
+        <script language="javascript" type="text/javascript">
+        	function Validate() {
+        		var rollnoLL = document.courseregister.rollnoLL.value;
+        		var rollnoUL = document.courseregister.rollnoUL.value;
+        		var rollno = document.courseregister.rollno.value;
+        		var CC = document.courseregister.courseCode.value;
+        		var CN = document.courseregister.courseName.value;
+        		if(CC == "" || CN == "") {
+        			alert("Enter some courseCode and courseNumber");
+        			return false;
+        		}
+        		if(rollno == "" && rollnoLL == "" && rollnoUL == "") {
+        			alert("Enter some range of roll numbers or a particular value");
+        			return false;
+        		}
+        		if(rollno != "" && rollnoLL != "" && rollnoUL != "") {
+        			alert("Enter either the range or a particular roll no for insertion");
+        			return false;
+        		}
+        		if(rollno != "" && rollnoLL == "" && rollnoUL == "") {
+        			alert("Enter either the range or a particular roll no for insertion");
+        			return false;
+        		}
+        		return true;	
+        	}
+        </script>
     </head>
     <body>
          <div class="navbar navbar-fixed-top">
@@ -54,7 +80,7 @@
             </div>
         </div>
         <div class="container">
-            <form class="form-horizontal well" action="added.php" method="post">
+            <form class="form-horizontal well" name="courseregister" action="added.php" method="post" onSubmit="return Validate()">
                         <fieldset>
                             <legend>Add Courses</legend>
                             <div class="control-group">
@@ -67,6 +93,25 @@
                                 <div class="input-prepend">
                                     <span class="add-on"><i class="icon-hand-right icon-large"></i>&nbsp;&nbsp;Course Name:</span>
                                     <input type="text" class="input-xlarge" id="courseName" name="courseName">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="input-prepend">
+                                    <span class="add-on"><i class="icon-circle-arrow-down icon-large"></i>&nbsp;&nbsp;Roll_no Lower Limit:</span>
+                                    <input type="text" class="input-xlarge" id="rollnoLL" name="rollnoLL">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="input-prepend">
+                                    <span class="add-on"><i class="icon-circle-arrow-up icon-large"></i>&nbsp;&nbsp;Roll_no Upper Limit:</span>
+                                    <input type="text" class="input-xlarge" id="rollnoUL" name="rollnoUL">
+                                </div>
+                            </div>
+                            or<br><br>
+                            <div class="control-group">
+                                <div class="input-prepend">
+                                    <span class="add-on"><i class="icon-plus-sign icon-large"></i>&nbsp;&nbsp;Add a particular Roll_no:</span>
+                                    <input type="text" class="input-xlarge" id="rollno" name="rollno">
                                 </div>
                             </div>
                             <?php
