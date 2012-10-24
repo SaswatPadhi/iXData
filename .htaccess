@@ -1,0 +1,2 @@
+# Remove the next line when deploying
+SetEnv iXData_ENVIRONMENT testing

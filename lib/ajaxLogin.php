@@ -4,6 +4,7 @@
     require_once dirname(__FILE__) .'/LDAP.php';
 
     $returnValue = array("message" => "Invalid Username or Password!", "result" => false);
+
     if(isset($_POST)) {
         if(isset($_POST["ldapUser"]) && isset($_POST["ldapPass"])) {
             if(($ldapRes = @ldap_authenticate($_POST["ldapUser"], $_POST["ldapPass"])) != false) {
@@ -24,3 +25,4 @@
     }
 
     echo json_encode($returnValue);
+?>

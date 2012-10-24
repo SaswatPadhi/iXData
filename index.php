@@ -27,6 +27,8 @@
                         <ul class="nav">
                             <li class="active"><a href="./"><i class="icon-home icon-large"></i> Home</a></li>
                             <li><a href="./"><i class="icon-book icon-large"></i> Courses</a></li>
+                        </ul>
+                        <ul class="nav pull-right">
                             <li><a href="./"><i class="icon-cogs"></i> About XData</a></li>
                         </ul>
                     </div>
@@ -72,7 +74,7 @@ Yahan pe kuch toh fekna hai!
             </div>
             <hr>
             <footer>
-                <p>Designed & Created by SSH.<span class="pull-right">&copy; Copyright IIT Bombay, 2012.</span></p>
+                <p>Designed &amp; Created by SSH.<span class="pull-right">&copy; Copyright IIT Bombay, 2012.</span></p>
             </footer>
         </div>
 

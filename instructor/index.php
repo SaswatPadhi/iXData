@@ -54,35 +54,33 @@
             </div>
         </div>
         <div class="container">
-            <h2 style="border-bottom: solid #ddd 1px;">Teaching Courses</h2>
-            <form action="add_course.php">
-            <center><button type="submit" class="btn btn-info btn-large"><i class="icon-plus-sign"></i> &nbsp; Add Courses</button></center>
-            </form>
-        <?php 
-            require_once("../lib/DB.php");
-            if(isset($_SESSION['courseCode'])) {
-                echo "<div class='row'><div class='span4 offset1'><div class='alert alert-success'>";
-                echo $_SESSION['courseCode']." is added to your account ! :)";
-                echo "</div></div></div>";
-                unset($_SESSION['courseCode']); 
-            }                   
-            $result = getInstructorCourses();
-            $count = 0;
-            while($row = mysql_fetch_array($result)) {
-                if($count == 0)
-                    echo "<div class='row'><div class='span4 offset1'>";
-                else
-                    echo "<div class='span4 offset2'>";
-                echo "<div class='alert alert-info'><h3>" . $row['cCode'] . "</h3>" . $row['cName'] . "</div></div>";
-                $count++;
-                if($count == 2) {
-                    echo "</div>";
-                    $count = 0;
+            <h2 style="border-bottom: solid #ddd 1px;">Your Courses</h2>
+            <center><a href="addCourse.php" class="btn btn-info btn-large"><i class="icon-plus-sign"></i> &nbsp; Add New Course</a></center><br>
+            <?php
+                require_once("../lib/DB.php");
+                if(isset($_SESSION['courseCode'])) {
+                    echo "<div class='row'><div class='span4 offset1'><div class='alert alert-success'>";
+                    echo $_SESSION['courseCode']." is added to your account ! :)";
+                    echo "</div></div></div>";
+                    unset($_SESSION['courseCode']);
                 }
-            }
-            if($count > 0)
-                echo "</div>";
-        ?>
+                $result = getInstructorCourses();
+                $count = 0;
+                while($row = mysql_fetch_array($result)) {
+                    if($count == 0)
+                        echo "<div class='row'><div class='span4 offset1'>";
+                    else
+                        echo "<div class='span4 offset2'>";
+                    echo "<div class='alert alert-info'><h3>" . $row['courseCode'] . "</h3>" . $row['courseName'] . "</div></div>";
+                    $count++;
+                    if($count == 2) {
+                        echo "</div>";
+                        $count = 0;
+                    }
+                }
+                if($count > 0)
+                    echo "</div>";
+            ?>
         </div>
         <!-- Load JS -->
         <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
