@@ -18,3 +18,17 @@ function ldap_authenticate($LDUSER, $LDPASS) {
    }
    return false;
 }
+
+function ldap_values($LDROLL) {
+    global $ldapconfig;
+    global $UID,$fullName,$mail;
+
+   $ds = @ldap_connect($ldapconfig['host'],$ldapconfig['port']);
+   $r = @ldap_search( $ds, $ldapconfig['basedn'], 'employeenumber=' . $LDROLL);
+   if ($r) {
+       $result = @ldap_get_entries( $ds, $r);
+       $UID = $result['0']['uid']['0'];
+       $mail = $result['0']['mail']['0'];
+       $fullName = $result['0']['cn']['0'];
+	}
+}
