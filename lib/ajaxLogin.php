@@ -14,7 +14,7 @@
     }
 
     if($returnValue["result"]) {
-        if($ldapRes['employeetype'][0] == 'fac')
+        if($ldapRes['employeetype'][0] != 'fac')
             activateUser($ldapRes['uid'][0], $ldapRes['givenname'][0], "I");
         else
             activateUser($ldapRes['uid'][0], $ldapRes['givenname'][0], "S");
