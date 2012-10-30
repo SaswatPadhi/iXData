@@ -12,7 +12,7 @@
     }
 
     function getStudentCourses() {
-        $query = "SELECT course.courseCode, course.courseName FROM (courseHistory INNER JOIN courseTaker USING (courseHistoryCode)) INNER JOIN course USING(courseCode) WHERE courseTaker.usernameLDAP = '%s'";
+        $query = "SELECT course.courseCode, course.courseName, courseHistory.courseHistoryCode FROM (courseHistory INNER JOIN courseTaker USING (courseHistoryCode)) INNER JOIN course USING(courseCode) WHERE courseTaker.usernameLDAP = '%s'";
         return @mysql_query(sprintf($query, $_SESSION['iXD_UId']));
     }
 
@@ -50,4 +50,9 @@
     function addStudentCourse($CHC, $UID) {
         $query = "INSERT INTO courseTaker VALUES(%d, '%s')";
         return mysql_query(sprintf($query, $CHC, $UID));
+    }
+    
+    function displayCourses($CHC) {
+        $query = "SELECT * FROM exercise WHERE courseHistoryCode = '%s'";
+        return @mysql_query(sprintf($query, $CHC));
     }
