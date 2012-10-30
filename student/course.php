@@ -53,26 +53,29 @@
             </div>
         </div>
         <div class="container">
-            <h2 style="border-bottom: solid #ddd 1px;">Registered Courses</h2>
-        <?php
-            require_once("../lib/DB.php");
-            $result = getStudentCourses();
-            $count = 0;
-            while($row = mysql_fetch_array($result)) {
-                if($count == 0)
-                    echo "<div class='row'><div class='span4 offset1'>";
-                else
-                    echo "<div class='span4 offset2'>";
-                echo "<div class='alert alert-info'><a href='course.php?code=".$row['courseHistoryCode']. "&courseCode=".$row['courseCode']."'><h3>" . $row['courseCode'] . "</h3></a>" . $row['courseName'] . "</div></div>";
-                $count++;
-                if($count == 2) {
-                    echo "</div>";
-                    $count = 0;
-                }
-            }
-            if($count > 0)
-                echo "</div>";
-        ?>
+            <h2 style="border-bottom: solid #ddd 1px;">Exercises for <?php echo $_GET['courseCode'] ?></h2>
+            <?php
+            	require_once("../lib/DB.php");
+            	$CHC = $_GET['code'];
+            		
+            	$result = displayCourses($CHC);
+            	$count = 1;
+            	echo "<br><div class='row'><ul class='nav nav-list'>";
+            	while($row = mysql_fetch_array($result)) {
+					echo "<li><a href='#'>Exercise Code: " . $row['exerciseCode'] . " | BY: " . $row['createdBy'];
+					if($row['deadlineA'] != NULL) 
+						echo  " | Deadline 1 : " .$row['deadlineA'];
+					if($row['deadlineB'] != NULL) 
+						echo  " | Deadline 2 : " .$row['deadlineB'];	
+					if($row['deadlineC'] != NULL) 
+						echo  " | Deadline 3 : " .$row['deadlineC'];
+					if($row['maximumMarks'] != NULL) 
+						echo  " | MaximumMarks : " .$row['maximumMarks'];
+					echo "</a></li><br>";			
+            	}
+            	echo "</ul></div>";
+            ?>
+        
         </div>
         <!-- Load JS -->
         <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
