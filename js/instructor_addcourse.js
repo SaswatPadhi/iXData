@@ -1,58 +1,19 @@
 $(function() {
-    $("form[name=courseregister] input").blur(function() {
-        $("#fieldAlert").animate({
-            opacity: 0.0
-        }, 500);
-    });
+    $("form[name=courseregister] input")
+        .popover({
+            trigger: 'manual',
+            delay:  {show: 400, hide: 100}
+        })
+        .blur(function(e) {
+            $(this).popover('hide');
+            e.preventDefault();
+        })
+        .focus(function(e) {
+            $(this).popover('show');
+            e.preventDefault();
+        });
 
-    $("form[name=courseregister] input[name=courseCode]").focus(function() {
-        $("#fieldAlert").stop().removeClass().addClass("alert alert-info")
-                        .html("Course Code is a unique 8 character identifier for a course.")
-                        .animate({
-                            opacity: 1.0
-                        }, 500);
-    });
-
-    $("form[name=courseregister] input[name=courseName]").focus(function() {
-        $("#fieldAlert").stop().removeClass().addClass("alert alert-info")
-                        .html("Course Name is the title of the course. It can be as long as you wish.")
-                        .animate({
-                            opacity: 1.0
-                        }, 500);
-    });
-
-    $("form[name=courseregister] input[name=rollnoPRE]").focus(function() {
-        $("#fieldAlert").stop().removeClass().addClass("alert alert-info")
-                        .html("A Roll No. Prefix should be common to all roll numbers in the 'Range'.")
-                        .animate({
-                            opacity: 1.0
-                        }, 500);
-    });
-
-    $("form[name=courseregister] input[name=rollnoLL]").focus(function() {
-        $("#fieldAlert").stop().removeClass().addClass("alert alert-info")
-                        .html("The initial suffix of the roll number, to be appended after the prefix.")
-                        .animate({
-                            opacity: 1.0
-                        }, 500);
-    });
-
-    $("form[name=courseregister] input[name=rollnoUL]").focus(function() {
-        $("#fieldAlert").stop().removeClass().addClass("alert alert-info")
-                        .html("The suffix that appears after the prefix, in the very last roll number.")
-                        .animate({
-                            opacity: 1.0
-                        }, 500);
-    });
-
-    $("form[name=courseregister] input[name=rollno]").focus(function() {
-        $("#fieldAlert").stop().removeClass().addClass("alert alert-warning")
-                        .html("Please enter any additional roll numbers, separated by COMMA ( , ) or SEMI-COLON ( ; ).")
-                        .animate({
-                            opacity: 1.0
-                        }, 500);
-    });
-
+    checkCourse();
 });
 
 function validateCourseInfo() {
@@ -66,5 +27,42 @@ function validateCourseInfo() {
         alert("Enter some courseCode and courseNumber");
         return false;
     }
+
+    checkCourse();
+
     return true;
+}
+
+function checkCourse() {
+    $("form[name=courseregister] input[name=courseCode]").blur(function() {
+        $.ajax({
+            cache:      false,
+            type:       'POST',
+            url:        '../lib/AJAX.php',
+            data:       'ajaxFunction=CHK_SEMESTER&courseCode='+ $("#courseCode").val(),
+            dataType:   'json',
+            success:    function(data) {
+                if(!data.result) {
+                    $('#courseDuplicateLable').html('Course already running!');
+                    $('#courseDuplicate div.modal-body div').html('This course has already been registered for the current semester.');
+                    $('#courseDuplicate').modal('show');
+                } else {
+                    $.ajax({
+                        cache:      false,
+                        type:       'POST',
+                        url:        '../lib/AJAX.php',
+                        data:       'ajaxFunction=CHK_COURSE&courseCode='+ $("#courseCode").val(),
+                        dataType:   'json',
+                        success:    function(data) {
+                            if(!data.result) {
+                                $('#courseDuplicateLable').html('Course already exists!');
+                                $('#courseDuplicate div.modal-body div').html('A course with the same course code already exists!');
+                                $('#courseDuplicate').modal('show');
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
 }

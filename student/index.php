@@ -2,12 +2,6 @@
     require("../config.php") ;
     require("../lib/AUTH.php");
     ensureLoggedIn("S");
-    if(isset($_SESSION['member'])) {
-        if($_SESSION['member'] == false) {
-            header('Location: register.php');
-            die();
-        }
-    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -63,7 +57,7 @@
                     echo "<div class='row'><div class='span4 offset1'>";
                 else
                     echo "<div class='span4 offset2'>";
-                echo "<div class='alert alert-info'><h3>" . $row['courseCode'] . "</h3>" . $row['courseName'] . "</div></div>";
+                echo "<div class='alert alert-info'><a href='course.php?code=" . $row['courseHistoryCode'] . "'><h3>" . $row['courseCode'] . "</h3></a>" . $row['courseName'] . "</div></div>";
                 $count++;
                 if($count == 2) {
                     echo "</div>";

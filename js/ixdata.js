@@ -19,8 +19,8 @@ $(function(){
         $.ajax({
             cache:      false,
             type:       'POST',
-            url:        'lib/ajaxLogin.php',
-            data:       'ldapUser='+ $("#ldapUser").val() + '&ldapPass=' + $('#ldapPass').val(),
+            url:        'lib/AJAX.php',
+            data:       'ajaxFunction=CHK_LOGIN&ldapUser='+ $("#ldapUser").val() + '&ldapPass=' + $('#ldapPass').val(),
             dataType:   'json',
             success:    function(data) {
                 if(data.result) {

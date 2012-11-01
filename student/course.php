@@ -1,13 +1,9 @@
 <?php
-    require("../config.php") ;
-    require("../lib/AUTH.php");
-    ensureLoggedIn("I");
-    if(!isset($_SESSION['member'])) {
-        header('Location: ./');
-        die();
-    }
+    require_once("../config.php") ;
+    require_once("../lib/AUTH.php");
+    require_once("../lib/DB.php");
+    ensureLoggedIn("S");
 ?>
-
 <!doctype html>
 <html lang="en">
     <head>
@@ -33,7 +29,6 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="active"><a href="./"><i class="icon-home icon-large"></i> Home</a></li>
-                            <li><a href="./"><i class="icon-table icon-large"></i> Stats</a></li>
                             <li><a href="./"><i class="icon-star icon-large"></i> Grades</a></li>
                         </ul>
                         <ul class="nav pull-right">
@@ -52,7 +47,28 @@
                 </div>
             </div>
         </div>
+        <div class="container">
+            <h2 style="border-bottom: solid #ddd 1px;">Exercises for <?php echo getCourseCodeForHistoryCode($_GET['code']); ?></h2>
+            <?php
+                $result = getCourseExercises($_GET['code']);
+                $count = 1;
+                echo "<br><div class='row'><ul class='nav nav-list'>";
+                while($row = mysql_fetch_array($result)) {
+                    echo "<li><a href='#'>Exercise Code: " . $row['exerciseCode'] . " | BY: " . $row['createdBy'];
+                    if($row['deadlineA'] != NULL)
+                        echo  " | Deadline 1 : " .$row['deadlineA'];
+                    if($row['deadlineB'] != NULL)
+                        echo  " | Deadline 2 : " .$row['deadlineB'];
+                    if($row['deadlineC'] != NULL)
+                        echo  " | Deadline 3 : " .$row['deadlineC'];
+                    if($row['maximumMarks'] != NULL)
+                        echo  " | MaximumMarks : " .$row['maximumMarks'];
+                    echo "</a></li><br>";
+                }
+                echo "</ul></div>";
+            ?>
 
+        </div>
         <!-- Load JS -->
         <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
         <script type="text/javascript" src="../js/bootstrap.min.js"></script>
