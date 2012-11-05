@@ -30,7 +30,7 @@
     }
 
     function getInstructorCourses() {
-        $query = "SELECT usernameLDAP, realFullName, courseCode, courseName FROM ((instructor INNER JOIN courseTeacher USING(usernameLDAP)) INNER JOIN (courseHistory INNER JOIN course USING(courseCode)) USING(courseHistoryCode)) WHERE usernameLDAP= '%s'";
+        $query = "SELECT usernameLDAP, realFullName, courseCode, courseName,courseHistoryCode FROM ((instructor INNER JOIN courseTeacher USING(usernameLDAP)) INNER JOIN (courseHistory INNER JOIN course USING(courseCode)) USING(courseHistoryCode)) WHERE usernameLDAP= '%s'";
         return @mysql_query(sprintf($query, $_SESSION['iXD_UId']));
     }
 
@@ -89,4 +89,13 @@
         while($row = @mysql_fetch_array($result))
             return true;
         return false;
+    }
+    
+    function addExerciseCode($CHC,$question,$createdBy,$MM) {
+        $query = "SELECT MAX(exerciseCode) FROM exercise";
+        $result = @mysql_query($query);
+        while($row = @mysql_fetch_array($result))
+            $maxEN = $row[0]+1;
+        $query = "INSERT INTO exercise VALUES(%d, %d, '%s', '%s', NOW(),%d, NULL, NULL, NULL )";
+        return @mysql_query(sprintf($query, $maxEN, $CHC, $createdBy,$question, $MM));
     }

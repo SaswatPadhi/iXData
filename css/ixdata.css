@@ -3,3 +3,15 @@ body {
     text-align: justify;
     padding-bottom: 20px;
 }
+
+.exerciserow {
+	padding-top: 8px;
+	text-align: center;
+}
+
+.exerciserow:hover {
+	background-color: #eee;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+}

@@ -1,6 +1,7 @@
 <?php
-    require("../config.php") ;
-    require("../lib/AUTH.php");
+    require_once("../config.php") ;
+    require_once("../lib/AUTH.php");
+    require_once("../lib/DB.php");
     ensureLoggedIn("I");
 ?>
 <!doctype html>
@@ -27,7 +28,7 @@
                     <a href="./" class="brand" style="font-size: 2em;"><b><?php echo $PROJECT_NAME; ?></b></a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
-                            <li class="active"><a href="./"><i class="icon-home icon-large"></i> Home</a></li>
+                            <li><a href="./"><i class="icon-home icon-large"></i> Home</a></li>
                             <li><a href="./"><i class="icon-table icon-large"></i> Stats</a></li>
                             <li><a href="./"><i class="icon-star icon-large"></i> Grades</a></li>
                         </ul>
@@ -48,33 +49,32 @@
             </div>
         </div>
         <div class="container">
-            <h2 style="border-bottom: solid #ddd 1px;">Your Courses</h2>
-            <center><a href="addCourse.php" class="btn btn-info btn-large"><i class="icon-plus-sign"></i> &nbsp; Add New Course</a></center><br>
+            <h2 style="border-bottom: solid #ddd 1px;">Exercises for <?php echo getCourseCodeForHistoryCode($_GET['code']); ?></h2>
             <?php
-                require_once("../lib/DB.php");
-                if(isset($_SESSION['courseCode'])) {
-                    echo "<div class='row'><div class='span4 offset1'><div class='alert alert-success'>";
-                    echo $_SESSION['courseCode']." is added to your account ! :)";
-                    echo "</div></div></div>";
-                    unset($_SESSION['courseCode']);
-                }
-                $result = getInstructorCourses();
-                $count = 0;
+                $result = getCourseExercises($_GET['code']);
+                $count = 1;
+                echo "<br><div class='container-fluid'>";
                 while($row = mysql_fetch_array($result)) {
-                    if($count == 0)
-                        echo "<div class='row'><div class='span4 offset1'>";
-                    else
-                        echo "<div class='span4 offset2'>";
-                    echo "<div class='alert alert-info'><a href='exercise.php?code=" . $row['courseHistoryCode'] . "'><h3>" . $row['courseCode'] . "</h3></a>" . $row['courseName'] . "</div></div>";
-                    $count++;
-                    if($count == 2) {
-                        echo "</div>";
-                        $count = 0;
-                    }
-                }
-                if($count > 0)
+                    echo "<div class='row-fluid exerciserow'><a href='#'><div class='span1'>#" . $row['exerciseCode'];
+                    echo "</div><div class='span2'>";
+                    if($row['maximumMarks'] != NULL)
+                        echo  "Maximum Marks : " .$row['maximumMarks'];
+                    echo "</div><div class='span3'>";
+                    if($row['deadlineA'] != NULL)
+                        echo  "Deadline 1 : " .$row['deadlineA'];
+                    echo "</div><div class='span3'>";
+                    if($row['deadlineB'] != NULL)
+                        echo  "Deadline 2 : " .$row['deadlineB'];
+                    echo "</div><div class='span3'>";
+                    if($row['deadlineC'] != NULL)
+                        echo  "Deadline 3 : " .$row['deadlineC'];
                     echo "</div>";
+                    echo "</a></div>";
+                }
+                echo "</div><br>";
             ?>
+            <center><a href="addExercise.php?code=<?php echo $_GET['code'];?>" class="btn btn-info btn-large"><i class="icon-plus-sign"></i> &nbsp; Add New Exercise</a></center><br>
+
         </div>
         <!-- Load JS -->
         <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
