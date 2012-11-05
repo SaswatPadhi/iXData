@@ -99,3 +99,8 @@
         $query = "INSERT INTO exercise VALUES(%d, %d, '%s', '%s', NOW(),%d, NULL, NULL, NULL )";
         return @mysql_query(sprintf($query, $maxEN, $CHC, $createdBy,$question, $MM));
     }
+    
+    function getQuestion($EN) {
+    	$query = "SELECT question,deadlineC FROM exercise WHERE exerciseCode=%d";	
+    	return @mysql_query(sprintf($query, $EN));
+    }

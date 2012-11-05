@@ -1,8 +1,8 @@
 <?php
-    require_once("../config.php") ;
-    require_once("../lib/AUTH.php");
-    require_once("../lib/DB.php");
-    ensureLoggedIn("I");
+require_once("../config.php") ;
+require_once("../lib/AUTH.php");
+require_once("../lib/DB.php");
+ensureLoggedIn("S");
 ?>
 <!doctype html>
 <html lang="en">
@@ -29,7 +29,6 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li><a href="./"><i class="icon-home icon-large"></i> Home</a></li>
-                            <li><a href="./"><i class="icon-table icon-large"></i> Stats</a></li>
                             <li><a href="./"><i class="icon-star icon-large"></i> Grades</a></li>
                         </ul>
                         <ul class="nav pull-right">
@@ -49,32 +48,23 @@
             </div>
         </div>
         <div class="container">
-            <h2 style="border-bottom: solid #ddd 1px;">Exercises for <?php echo getCourseCodeForHistoryCode($_GET['code']); ?></h2>
-            <?php
-                $result = getCourseExercises($_GET['code']);
-                $count = 1;
-                echo "<br><div class='container-fluid'>";
-                while($row = mysql_fetch_array($result)) {
-                    echo "<div class='row-fluid exerciserow'><a href='exerciseDisplay.php?number=".$row['exerciseCode']."'><div class='span1'>#" . $row['exerciseCode'];
-                    echo "</div><div class='span2'>";
-                    if($row['maximumMarks'] != NULL)
-                        echo  "Maximum Marks : " .$row['maximumMarks'];
-                    echo "</div><div class='span3'>";
-                    if($row['deadlineA'] != NULL)
-                        echo  "Deadline 1 : " .$row['deadlineA'];
-                    echo "</div><div class='span3'>";
-                    if($row['deadlineB'] != NULL)
-                        echo  "Deadline 2 : " .$row['deadlineB'];
-                    echo "</div><div class='span3'>";
-                    if($row['deadlineC'] != NULL)
-                        echo  "Deadline 3 : " .$row['deadlineC'];
-                    echo "</div>";
-                    echo "</a></div>";
-                }
-                echo "</div><br>";
-            ?>
-            <center><a href="addExercise.php?code=<?php echo $_GET['code'];?>" class="btn btn-info btn-large"><i class="icon-plus-sign"></i> &nbsp; Add New Exercise</a></center><br>
-
+            <h2 style="border-bottom: solid #ddd 1px;"><center>Exercise<?php echo $_GET['number']; ?></center></h2>
+				<?php
+				$result = getQuestion($_GET['number']);
+				while($row = mysql_fetch_array($result)) {
+					echo "<div class='row'><div class='span10 offset1'>";
+					echo "<div class='alert alert-info'>";
+					echo $row['question'];
+					echo "</div></div></div>";
+					$deadlineC = $row['deadlineC'];
+				}
+				if($deadlineC == NULL || strtotime($deadlineC) > time()) {
+					echo "<center>";
+					echo "<form action='submit.php' method='post'><h3>Query</h3><br>";
+					echo "<textarea cols='100' rows='5' class='input-xxlarge' id='query' name='query' ></textarea><br>";
+					echo "<button type='submit' class='btn btn-primary'><i class='icon-check'></i> Submit</button></form></center>";
+				}
+				?>
         </div>
         <!-- Load JS -->
         <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
