@@ -104,3 +104,8 @@
     	$query = "SELECT question,deadlineC FROM exercise WHERE exerciseCode=%d";	
     	return @mysql_query(sprintf($query, $EN));
     }
+    
+    function getTeacherAndCourses() {
+    	$query = "SELECT course.courseCode, course.courseName, instructor.realFullName FROM (((course INNER JOIN courseHistory USING ( courseCode )) INNER JOIN courseTeacher USING ( courseHistoryCode )) INNER JOIN instructor USING ( usernameLDAP ))";
+    	return @mysql_query($query);
+    }

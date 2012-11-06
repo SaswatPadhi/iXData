@@ -86,11 +86,9 @@
                     echo "<div class='alert alert-error'> Course could not be registered for this sem!</div>";
                 if(!$courseInstructorAdded)
                     echo "<div class='alert alert-error'> You could not be registered as the course instructor!</div>";
-
-                var_dump($studentAddedLog);
-                echo "<br><br>";
-                var_dump($studentCourseLog);
+				echo "<div class='alert alert-success'> Students for the course ".$courseCode." are registered Successfully!</div>";
             ?>
+            <center><button type="button" class="btn btn-primary" onclick="window.location='./addCourse.php'"><i class="icon-arrow-left"></i> Back</button></center>
         </div>
         <!-- Load JS -->
         <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
