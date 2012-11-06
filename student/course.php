@@ -52,20 +52,25 @@
             <?php
                 $result = getCourseExercises($_GET['code']);
                 $count = 1;
-                echo "<br><div class='row'><ul class='nav nav-list'>";
+                echo "<br><div class='container-fluid'>";
                 while($row = mysql_fetch_array($result)) {
-                    echo "<li><a href='#'>Exercise Code: " . $row['exerciseCode'] . " | BY: " . $row['createdBy'];
-                    if($row['deadlineA'] != NULL)
-                        echo  " | Deadline 1 : " .$row['deadlineA'];
-                    if($row['deadlineB'] != NULL)
-                        echo  " | Deadline 2 : " .$row['deadlineB'];
-                    if($row['deadlineC'] != NULL)
-                        echo  " | Deadline 3 : " .$row['deadlineC'];
+                    echo "<div class='row-fluid exerciserow'><a href='exerciseDisplay.php?number=".$row['exerciseCode']."'><div class='span1'>#" . $row['exerciseCode'];
+                    echo "</div><div class='span2'>";
                     if($row['maximumMarks'] != NULL)
-                        echo  " | MaximumMarks : " .$row['maximumMarks'];
-                    echo "</a></li><br>";
+                        echo  "Maximum Marks : " .$row['maximumMarks'];
+                    echo "</div><div class='span3'>";
+                    if($row['deadlineA'] != NULL)
+                        echo  "Deadline 1 : " .$row['deadlineA'];
+                    echo "</div><div class='span3'>";
+                    if($row['deadlineB'] != NULL)
+                        echo  "Deadline 2 : " .$row['deadlineB'];
+                    echo "</div><div class='span3'>";
+                    if($row['deadlineC'] != NULL)
+                        echo  "Deadline 3 : " .$row['deadlineC'];
+                    echo "</div>";
+                    echo "</a></div>";
                 }
-                echo "</ul></div>";
+                echo "</div><br>";
             ?>
 
         </div>

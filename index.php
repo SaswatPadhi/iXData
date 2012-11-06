@@ -26,7 +26,7 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="active"><a href="./"><i class="icon-home icon-large"></i> Home</a></li>
-                            <li><a href="./"><i class="icon-book icon-large"></i> Courses</a></li>
+                            <li><a href="./course.php"><i class="icon-book icon-large"></i> Courses</a></li>
                         </ul>
                         <ul class="nav pull-right">
                             <li><a href="./"><i class="icon-cogs"></i> About XData</a></li>

@@ -1,37 +1,8 @@
 <?php
-    require_once("../lib/DB.php");
+    require_once("../config.php") ;
     require_once("../lib/AUTH.php");
-    require_once("../lib/LDAP.php");
+    require_once("../lib/DB.php");
     ensureLoggedIn("I");
-
-    $courseCode = $_POST['courseCode'];
-    $courseName = $_POST['courseName'];
-    $rollnoPRE  = $_POST['rollnoPRE'];
-    $rollnoLL   = $_POST['rollnoLL'];
-    $rollnoUL   = $_POST['rollnoUL'];
-    $rollno     = $_POST['rollno'];
-
-    $courseAdded = addCourse($courseCode, $courseName);
-    $courseHistoryAdded = addCourseHistory($courseCode);
-    $courseInstructorAdded = addInstructorCourse($courseHistoryAdded);
-
-    $LL = (int)$rollnoLL;
-    $UL = (int)$rollnoUL;
-    $studentAddedLog = array();
-    $studentCourseLog = array();
-    $intWidth = strlen($rollnoUL);
-
-    for($i = $LL; $i <= $UL; ++$i) {
-        $roll = $rollnoPRE . sprintf("%0" . $intWidth . "d", $i);
-        $result = @ldap_find($roll);
-        if($result) {
-            $studentAddedLog[$roll] = addStudentInfo($result['employeenumber'][0], $result['uid'][0], $result['givenname'][0], $result['mail'][0]);
-            $studentCourseLog[$roll] = addStudentCourse($courseHistoryAdded, $result['uid'][0]);
-        } else {
-            $studentAddedLog[$roll] = false;
-            $studentCourseLog[$roll] = false;
-        }
-    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -78,17 +49,32 @@
             </div>
         </div>
         <div class="container">
-            <h2 style="border-bottom: solid #ddd 1px;">Registered new course..</h2>
+            <h2 style="border-bottom: solid #ddd 1px;">Exercises for <?php echo getCourseCodeForHistoryCode($_GET['code']); ?></h2>
             <?php
-                if(!$courseAdded)
-                    echo "<div class='alert alert-error'> Course code could not be registered!</div>";
-                if(!$courseHistoryAdded)
-                    echo "<div class='alert alert-error'> Course could not be registered for this sem!</div>";
-                if(!$courseInstructorAdded)
-                    echo "<div class='alert alert-error'> You could not be registered as the course instructor!</div>";
-				echo "<div class='alert alert-success'> Students for the course ".$courseCode." are registered Successfully!</div>";
+                $result = getCourseExercises($_GET['code']);
+                $count = 1;
+                echo "<br><div class='container-fluid'>";
+                while($row = mysql_fetch_array($result)) {
+                    echo "<div class='row-fluid exerciserow'><a href='exerciseDisplay.php?number=".$row['exerciseCode']."'><div class='span1'>#" . $row['exerciseCode'];
+                    echo "</div><div class='span2'>";
+                    if($row['maximumMarks'] != NULL)
+                        echo  "Maximum Marks : " .$row['maximumMarks'];
+                    echo "</div><div class='span3'>";
+                    if($row['deadlineA'] != NULL)
+                        echo  "Deadline 1 : " .$row['deadlineA'];
+                    echo "</div><div class='span3'>";
+                    if($row['deadlineB'] != NULL)
+                        echo  "Deadline 2 : " .$row['deadlineB'];
+                    echo "</div><div class='span3'>";
+                    if($row['deadlineC'] != NULL)
+                        echo  "Deadline 3 : " .$row['deadlineC'];
+                    echo "</div>";
+                    echo "</a></div>";
+                }
+                echo "</div><br>";
             ?>
-            <center><button type="button" class="btn btn-primary" onclick="window.location='./addCourse.php'"><i class="icon-arrow-left"></i> Back</button></center>
+            <center><a href="addExercise.php?code=<?php echo $_GET['code'];?>" class="btn btn-info btn-large"><i class="icon-plus-sign"></i> &nbsp; Add New Exercise</a></center><br>
+
         </div>
         <!-- Load JS -->
         <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
