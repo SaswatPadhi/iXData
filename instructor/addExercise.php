@@ -7,6 +7,7 @@
 <html lang="en">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="../css/jquery-ui-timepicker-addon.css"/>
         <link rel="stylesheet" type="text/css" href="../css/ixdata.css"/>
         <link rel="stylesheet" type="text/css" href="../css/font-awesome.css"/>
         <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
@@ -48,79 +49,71 @@
             </div>
         </div>
         <div class="container">
-            <h2 style="border-bottom: solid #ddd 1px;">Add New Course</h2>
-            <form class="form-horizontal" name="courseregister" action="newCourse.php" method="POST" onSubmit="return validateCourseInfo()">
+            <h2 style="border-bottom: solid #ddd 1px;">Add New Exercise</h2>
+            <form class="form-horizontal"  action="added.php" method="POST" onSubmit="return validateExerciseInfo()">
                 <fieldset>
-                    <h4>Course Details:</h4>
+                    <h4>Exercise Details:</h4>
                     <div class="control-group">
-                        <label class="control-label" for="courseCode">Course Code</label>
-                        <div class="controls">
-                            <div class="input-prepend">
-                                <span class="add-on"><i class="icon-tag icon-large"></i></span>
-                                <input type="text" class="input-medium" id="courseCode" name="courseCode" maxlength="8" placeholder="CS 123" data-title="Course Code" data-content="Unique 8 character identifier for the course.">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="courseName">Course Name</label>
+                        <label class="control-label" for="courseName">Question</label>
                         <div class="controls">
                             <div class="input-prepend">
                                 <span class="add-on"><i class="icon-book icon-large"></i></span>
-                                <input type="text" class="input-xxlarge" id="courseName" name="courseName" placeholder="Intermediate SQL" data-title="Course Name" data-content="The title of the course.">
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <h4>Student Enrolment:</h4>
-                    <div class="control-group">
-                        <label class="control-label" for="rollnoLL">Roll No. Prefix</label>
-                        <div class="controls">
-                            <div class="input-prepend">
-                                <span class="add-on"><i class="icon-search icon-large"></i></span>
-                                <input type="text" class="input-medium" id="rollnoPRE" name="rollnoPRE" placeholder="09D0300" data-title="Roll No. Prefix" data-content="A common prefix for all roll numbers in a range.">
-                            </div>
-                            <span style="font-size: 0.9em;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Range &nbsp; &nbsp; &nbsp; </span>
-                            <div class="input-prepend">
-                                <span class="add-on"><i class="icon-chevron-right icon-large"></i></span>
-                                <input type="text" class="input-small" id="rollnoLL" name="rollnoLL" maxlength="3" placeholder="01">
-                            </div>
-                            &#8210;
-                            <div class="input-append">
-                                <input type="text" class="input-small" id="rollnoUL" name="rollnoUL" maxlength="3" placeholder="88">
-                                <span class="add-on"><i class="icon-chevron-left icon-large"></i></span>
+                                <textarea cols="50" rows="5" class="input-xxlarge" id="question" name="question" placeholder="Write an sql query for ...?"></textarea>;
                             </div>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="rollno">Additional Roll No.</label>
+                        <label class="control-label" for="rollno">Maximum Marks</label>
                         <div class="controls">
                             <div class="input-prepend">
-                                <span class="add-on"><i class="icon-plus-sign icon-large"></i></span>
-                                <input type="text" class="input-xxlarge" id="rollno" name="rollno" placeholder="100050061; 10D020014; 100050020" data-title="Additional Roll No." data-content="Here, you can enter additional roll numbers that do not follow the above prefixed-range pattern.<br>Separate using , or ;">
+                                <span class="add-on"><i class="icon-star icon-large"></i></span>
+                                <input type="text" class="input" id="maxmarks" name="maxmarks">
                             </div>
                         </div>
                     </div>
+                    <div class="control-group">
+                        <label class="control-label" for="rollno">DeadlineA</label>
+                        <div class="controls">
+                            <div class="input-prepend">
+                                <span class="add-on"><i class="icon-time icon-large"></i></span>
+                                <input type="text" class="input" id="deadlineA" name="deadlineA">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="rollno">DeadlineB</label>
+                        <div class="controls">
+                            <div class="input-prepend">
+                                <span class="add-on"><i class="icon-time icon-large"></i></span>
+                                <input type="text" class="input" id="deadlineB" name="deadlineB">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="rollno">DeadlineC</label>
+                        <div class="controls">
+                            <div class="input-prepend">
+                                <span class="add-on"><i class="icon-time icon-large"></i></span>
+                                <input type="text" class="input" id="deadlineC" name="deadlineC">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" class="input" id="CHC" name="CHC" value="<?php echo $_GET['code'];?>">
+
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary"><i class="icon-check"></i> Register Course</button>
+                        <button type="submit" class="btn btn-primary"><i class="icon-check"></i>Add Exercise</button>
                         <button type="button" class="btn" onclick="window.location='./'"><i class="icon-trash"></i> Cancel</button>
                     </div>
                 </fieldset>
             </form>
         </div>
-        <div id="courseDuplicate" class="modal hide fade" data-backdrop="static" data-keyboard="false" role="dialog" tabindex="-1" aria-labelledBy="courseDuplicateLable" aria-hidden="true">
-            <div class="modal-header">
-                <h3 id="courseDuplicateLable">Duplicate Course!</h3>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-error"></div>
-            </div>
-            <div class="modal-footer">
-                <button id="courseDuplicateButton" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">OK</button>
-            </div>
-        </div>
         <!-- Load JS -->
         <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
         <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="../js/instructor_addcourse.js"></script>
+        <script type="text/javascript" src="../js/jquery-ui-1.9.1.custom.min.js"></script>
+        <script type="text/javascript" src="../js/jquery-ui-timepicker-addon.js"></script>
+        <script type="text/javascript" src="../js/jquery-ui-sliderAccess.js"></script>
+        <script type="text/javascript" src="../js/instructor_addexercise.js"></script>
     </body>
 </html>

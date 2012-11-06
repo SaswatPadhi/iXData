@@ -65,7 +65,7 @@
                         echo "<div class='row'><div class='span4 offset1'>";
                     else
                         echo "<div class='span4 offset2'>";
-                    echo "<div class='alert alert-info'><h3>" . $row['courseCode'] . "</h3>" . $row['courseName'] . "</div></div>";
+                    echo "<div class='alert alert-info'><a href='exercise.php?code=" . $row['courseHistoryCode'] . "'><h3>" . $row['courseCode'] . "</h3></a>" . $row['courseName'] . "</div></div>";
                     $count++;
                     if($count == 2) {
                         echo "</div>";
