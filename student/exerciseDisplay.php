@@ -70,9 +70,24 @@
 					$deadlineC = $result['deadlineC'];
 					if($deadlineC == NULL || strtotime($deadlineC) > time()) {
 						echo "<center><br>
-						<form action='submission.php' method='post'><h3>~ Submission ~</h3>
+						<form action='course.php?code=".$_GET['code']."&number=".$_GET['number']."' method='post'><h3>~ Submission ~</h3>
 						<textarea cols='50' rows='3' class='input input-block-level' id='query' name='query' placeholder='Enter your SQL query here...'></textarea><br>
 						<button type='submit' class='btn btn-primary'><i class='icon-check'></i> Submit your solution</button></form></center>";
+					}
+					
+					$submissions = getSubmissions($_GET['code'],$_GET['number']);
+					if($submissions) {
+						echo "<hr><center><h3>~Submissions Done~</h3></center>";
+						while($row = mysql_fetch_assoc($submissions)){
+							echo "<table class='table table-striped table-bordered'>
+								<tr>
+									<td rowspan='3' style='width: 75%;'>" . $row['response'] . "</td>
+									<td>Submitted On: " . bkdt($row['submittedOn']) . "</td>
+								</tr>
+								<tr><td>Marks Obtained: " . $row['marksObtained'] . "</td></tr>
+								<tr><td>Evaluation: " . $row['isEvaluated'] . "</td></tr>
+							</table>";
+						}
 					}
 				?>
         </div>

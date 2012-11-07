@@ -29,7 +29,7 @@
                             <li><a href="./course.php"><i class="icon-book icon-large"></i> Courses</a></li>
                         </ul>
                         <ul class="nav pull-right">
-                            <li><a href="./"><i class="icon-cogs"></i> About XData</a></li>
+                            <li><a href="./aboutXData.php"><i class="icon-cogs"></i> About XData</a></li>
                         </ul>
                     </div>
                 </div>
@@ -41,12 +41,10 @@
                     <div class="hero-unit">
                         <h1><?php echo $PROJECT_NAME; ?></h1>
                         <b>An SQL learning tool based on X-Data.</b><br><br>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-Pellentesque tortor ipsum, dapibus at congue a, facilisis vel quam. Aliquam vel sapien lectus, sed hendrerit ligula.
-Quisque vel nisl non turpis pharetra facilisis sed vel tortor. Pellentesque tortor ipsum, dapibus at congue a, facilisis vel quam. Aliquam vel sapien lectus, sed hendrerit ligula.
-Yahan pe kuch toh fekna hai!
-                            <br><br>
-                            <a href="" class="btn">Read more about XData...</a>
+                        <p>An interface to the ongoing XData project so that students and instructors can benefit from it, additionally getting rid of chances of human error by TAs while evaluating the SQL queries.</p>
+                       <p> A learning tool, where instructors can add assignments for students, for which they are supposed to submit queries. And then students could test/submit queries and receive feedback/grade for their queries.</p>
+                      <br>
+                            <a href="./aboutXData.php" class="btn">Read more about XData...</a>
                         </p>
                     </div>
                 </div>
