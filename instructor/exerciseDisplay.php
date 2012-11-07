@@ -51,16 +51,24 @@ ensureLoggedIn("I");
         <div class="container">
             <h2 style="border-bottom: solid #ddd 1px;"><center>Exercise-<?php echo $_GET['number']; ?></center></h2>
 				<?php
-				$result = getQuestion($_GET['number']);
-				while($row = mysql_fetch_array($result)) {
-					echo "<br><div class='well'>";
-					echo $row['question'];
+					$result = getQuestion($_GET['code'],$_GET['number']);
+					
+					echo "<div class='row-fluid'>";
+					if($result['maximumMarks'] != NULL)
+						echo "<div class='span3 alert alert-info'><b>Maximum Marks : </b>".$result['maximumMarks']."</div>";
+					if($result['deadlineA'] != NULL)
+						echo "<div class='span3 alert alert-error'><b>Deadline-A : </b>".bkdt($result['deadlineA'])."</div>";
+					if($result['deadlineB'] != NULL)
+						echo "<div class='span3 alert alert-warning'><b>Deadline-B : </b>".bkdt($result['deadlineB'])."</div>";
+					if($result['deadlineC'] != NULL)
+						echo "<div class='span3 alert alert-success'><b>Deadline-C : </b>".bkdt($result['deadlineC'])."</div>";
 					echo "</div>";
-					$deadlineC = $row['deadlineC'];
-				}
 				
+					echo "<div class='well'>";
+					echo $result['question'];
+					echo "</div>";
 				?>
-			<center><button type='submit' onclick="window.location='./editExercise.php?number=<?php echo $_GET['number']; ?>'" class='btn btn-primary'><i class='icon-edit'></i> Edit Exercise</button>
+			<center><button type='button' onclick="window.location='./addExercise.php?code=<?php echo $_GET['code']; ?>&number=<?php echo $_GET['number']; ?>'" class='btn btn-primary'><i class='icon-edit'></i> Edit Exercise</button>
 			<button type="button" class="btn" onclick="window.location='./index.php'"><i class="icon-trash"></i> Cancel</button></center>
         </div>
         <!-- Load JS -->

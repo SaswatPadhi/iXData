@@ -50,31 +50,35 @@
         </div>
         <div class="container">
             <h2 style="border-bottom: solid #ddd 1px;">Exercises for <?php echo getCourseCodeForHistoryCode($_GET['code']); ?></h2>
+            <center><a href="addExercise.php?code=<?php echo $_GET['code'];?>" class="btn btn-info btn-large"><i class="icon-plus-sign"></i> &nbsp; Add New Exercise</a></center>
             <?php
                 $result = getCourseExercises($_GET['code']);
                 $count = 1;
                 echo "<br><div class='container-fluid'>";
                 while($row = mysql_fetch_array($result)) {
-                    echo "<div class='row-fluid exerciserow'><a href='exerciseDisplay.php?number=".$row['exerciseCode']."'><div class='span1'>#" . $row['exerciseCode'];
+                    echo "<div class='row-fluid exerciserow'><a href='exerciseDisplay.php?number=".$row['exerciseCode']."&code=".$_GET['code']."'><div class='span1'>#" . $row['exerciseCode'];
                     echo "</div><div class='span2'>";
                     if($row['maximumMarks'] != NULL)
-                        echo  "Maximum Marks : " .$row['maximumMarks'];
-                    echo "</div><div class='span3'>";
+                        echo  "Max. Marks : " . $row['maximumMarks'];
+                    echo "</div><div class='span7'>Deadlines: &nbsp; &nbsp; ";
                     if($row['deadlineA'] != NULL)
-                        echo  "Deadline 1 : " .$row['deadlineA'];
-                    echo "</div><div class='span3'>";
+                        echo bkdt($row['deadlineA']) . " &nbsp; &nbsp; ";
                     if($row['deadlineB'] != NULL)
-                        echo  "Deadline 2 : " .$row['deadlineB'];
-                    echo "</div><div class='span3'>";
+                        echo bkdt($row['deadlineB']) . " &nbsp; &nbsp; ";
                     if($row['deadlineC'] != NULL)
-                        echo  "Deadline 3 : " .$row['deadlineC'];
+                        echo bkdt($row['deadlineC']) . " &nbsp; &nbsp; ";
+                    echo "</div><div class='span1'>";
+                    if($row['dataSetGenerated'] == '0')
+                    	echo "<i class='icon-upload-alt icon-large'></i>";
+                	else if($row['dataSetGenerated'] == '1')
+                		echo "<i class='icon-cogs icon-large'></i>";
+                	else if($row['dataSetGenerated'] == '2')
+                		echo "<i class='icon-ok icon-large'></i>";
                     echo "</div>";
                     echo "</a></div>";
                 }
                 echo "</div><br>";
             ?>
-            <center><a href="addExercise.php?code=<?php echo $_GET['code'];?>" class="btn btn-info btn-large"><i class="icon-plus-sign"></i> &nbsp; Add New Exercise</a></center><br>
-
         </div>
         <!-- Load JS -->
         <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>

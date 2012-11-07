@@ -54,7 +54,7 @@
                 $count = 1;
                 echo "<br><div class='container-fluid'>";
                 while($row = mysql_fetch_array($result)) {
-                    echo "<div class='row-fluid exerciserow'><a href='exerciseDisplay.php?number=".$row['exerciseCode']."'><div class='span1'>#" . $row['exerciseCode'];
+                    echo "<div class='row-fluid exerciserow'><a href='exerciseDisplay.php?code=".$_GET['code']."&number=".$row['exerciseCode']."'><div class='span1'>#" . $row['exerciseCode'];
                     echo "</div><div class='span2'>";
                     if($row['maximumMarks'] != NULL)
                         echo  "Maximum Marks : " .$row['maximumMarks'];
