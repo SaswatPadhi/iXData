@@ -1,11 +1,7 @@
 <?php
-    require_once("../config.php") ;
-    require_once("../lib/AUTH.php");
-    require_once("../lib/DB.php");
-    ensureLoggedIn("S");
-    if(isset($_POST['query'])) {
-		$result = submitQuery($_GET['code'], $_GET['number'], $_POST['query']);
-	}
+    require("../config.php") ;
+    require("../lib/AUTH.php");
+    ensureLoggedIn("I");
 ?>
 <!doctype html>
 <html lang="en">
@@ -32,6 +28,7 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="active"><a href="./"><i class="icon-home icon-large"></i> Home</a></li>
+                            <li><a href="./"><i class="icon-table icon-large"></i> Stats</a></li>
                             <li><a href="./"><i class="icon-star icon-large"></i> Grades</a></li>
                         </ul>
                         <ul class="nav pull-right">
@@ -51,31 +48,24 @@
             </div>
         </div>
         <div class="container">
-            <h2 style="border-bottom: solid #ddd 1px;">Exercises for <?php echo getCourseCodeForHistoryCode($_GET['code']); ?></h2>
-            <?php
-                $result = getCourseExercises($_GET['code']);
-                $count = 1;
-                echo "<br><div class='container-fluid'>";
-                while($row = mysql_fetch_array($result)) {
-                    echo "<div class='row-fluid exerciserow'><a href='exerciseDisplay.php?code=".$_GET['code']."&number=".$row['exerciseCode']."'><div class='span1'>#" . $row['exerciseCode'];
-                    echo "</div><div class='span2'>";
-                    if($row['maximumMarks'] != NULL)
-                        echo  "Maximum Marks : " .$row['maximumMarks'];
-                    echo "</div><div class='span3'>";
-                    if($row['deadlineA'] != NULL)
-                        echo  "Deadline 1 : " .$row['deadlineA'];
-                    echo "</div><div class='span3'>";
-                    if($row['deadlineB'] != NULL)
-                        echo  "Deadline 2 : " .$row['deadlineB'];
-                    echo "</div><div class='span3'>";
-                    if($row['deadlineC'] != NULL)
-                        echo  "Deadline 3 : " .$row['deadlineC'];
-                    echo "</div>";
-                    echo "</a></div>";
-                }
-                echo "</div><br>";
-            ?>
-
+        	<div class="row">
+        		<div class="offset2 span8">
+               	<h2 style="border-bottom: solid #ddd 1px;"><center>Profile Info</center></h2>
+            		<center><table class='table table-striped table-bordered table-condensed'>
+					<?php
+					require("../lib/DB.php");
+					$UName = $_SESSION['iXD_UName'];
+					$result = getProfileInfo($UName);
+					while($row = mysql_fetch_array($result)) {
+						echo "<tr><td><h3>Employee Number</h3></td><td><h3>".$row['employeeNumber']."</h3></td></tr>";
+						echo "<tr><td><h3>User Name</h3></td><td><h3>".$row['usernameLDAP']."</h3></td></tr>";
+						echo "<tr><td><h3>Instructor Full Name</h3></td><td><h3>".$row['realFullName']."</h3></td></tr>";
+						echo "<tr><td><h3>GPO ID</h3></td><td><h3>".$row['mailID_GPO']."</h3></td></tr>";
+					}
+					?> 
+					</table></center> 
+				</div>        
+        	</div>
         </div>
         <!-- Load JS -->
         <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
