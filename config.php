@@ -1,6 +1,10 @@
 <?php
     $PROJECT_NAME = "iXData";
 
+    $XDATA_LOCATION = "/home/saswat/xdata/";
+    $RES_LOCATION = $XDATA_LOCATION . "Current.res";
+    $TASK_LOCATION = $XDATA_LOCATION . "Current.tsk";
+
     if (getenv('iXData_ENVIRONMENT') == 'testing') {
         $PROJECT_HOST = "localhost";
         $PROJECT_PORT = "3306";
