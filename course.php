@@ -36,11 +36,11 @@
             </div>
         </div>
         <div class="container">
-            <div class="row">
-                <div class="span12">
-                    <div class="hero-unit">
+        	<div class='well'>
+            	<div class="row">
+                	<div class="span12">
                     	<center><h2>Courses Offered<h2></center><hr>
-                    	<table width="100%" ba>
+                    	<table width="100%" >
 						<?php
 							require("lib/DB.php");
 							$result = getTeacherAndCourses();
@@ -54,7 +54,7 @@
 							}
 						?> 
 						</table>                       
-                    </div>
+              		</div>
                 </div>
             </div>
             <hr>

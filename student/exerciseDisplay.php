@@ -48,14 +48,24 @@ ensureLoggedIn("S");
             </div>
         </div>
         <div class="container">
-            <h2 style="border-bottom: solid #ddd 1px;"><center>Exercise<?php echo $_GET['number']; ?></center></h2>
+            <h2 style="border-bottom: solid #ddd 1px;"><center>Exercise-<?php echo $_GET['number']; ?></center></h2>
 				<?php
 				$result = getQuestion($_GET['number']);
+				
 				while($row = mysql_fetch_array($result)) {
-					echo "<div class='row'><div class='span10 offset1'>";
-					echo "<div class='alert alert-info'>";
+					echo "<br><div class='alert alert-success'><table width='100%'><tr>";
+					if($row['maximumMarks'] != NULL)
+						echo "<td><b>Maximum Marks : </b>".$row['maximumMarks']."</td>";
+					if($row['deadlineA'] != NULL)
+						echo "<td><b>Deadline-A : </b>".$row['deadlineA']."</td>";
+					if($row['deadlineB'] != NULL)
+						echo "<td><b>Deadline-B : </b>".$row['deadlineB']."</td>";
+					if($row['deadlineC'] != NULL)
+						echo "<td><b>Deadline-C : </b>".$row['deadlineC']."</td>";
+					echo "</tr></table></div><br>";
+					echo "<div class='well'>";
 					echo $row['question'];
-					echo "</div></div></div>";
+					echo "</div>";
 					$deadlineC = $row['deadlineC'];
 				}
 				if($deadlineC == NULL || strtotime($deadlineC) > time()) {

@@ -101,7 +101,7 @@
     }
     
     function getQuestion($EN) {
-    	$query = "SELECT question,deadlineC FROM exercise WHERE exerciseCode=%d";	
+    	$query = "SELECT question,maximumMarks,deadlineA,deadlineB,deadlineC FROM exercise WHERE exerciseCode=%d";	
     	return @mysql_query(sprintf($query, $EN));
     }
     
