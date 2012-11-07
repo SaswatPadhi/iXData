@@ -32,6 +32,22 @@
             $studentCourseLog[$roll] = false;
         }
     }
+    
+    $rollNumbers = explode(",",$rollno);
+    for ($i = 0; $i < sizeof($rollNumbers); $i++) {
+    	$roll = $rollNumbers[$i];
+    	if($roll != "") {
+			$result = @ldap_find($roll);
+			echo $result;
+			if($result) {
+		        $studentAddedLog[$roll] = addStudentInfo($result['employeenumber'][0], $result['uid'][0], $result['givenname'][0], $result['mail'][0]);
+		        $studentCourseLog[$roll] = addStudentCourse($courseHistoryAdded, $result['uid'][0]);
+		    } else {
+		        $studentAddedLog[$roll] = false;
+		        $studentCourseLog[$roll] = false;
+		    }
+		}
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -86,7 +102,8 @@
                     echo "<div class='alert alert-error'> Course could not be registered for this sem!</div>";
                 if(!$courseInstructorAdded)
                     echo "<div class='alert alert-error'> You could not be registered as the course instructor!</div>";
-				echo "<div class='alert alert-success'> Students for the course ".$courseCode." are registered Successfully!</div>";
+                if($courseAdded && $courseHistoryAdded && $courseInstructorAdded)
+					echo "<div class='alert alert-success'> Students for the course ".$courseCode." are registered Successfully!</div>";
             ?>
             <center><button type="button" class="btn btn-primary" onclick="window.location='./addCourse.php'"><i class="icon-arrow-left"></i> Back</button></center>
         </div>

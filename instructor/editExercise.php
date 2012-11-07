@@ -52,16 +52,10 @@ ensureLoggedIn("I");
             <h2 style="border-bottom: solid #ddd 1px;"><center>Exercise-<?php echo $_GET['number']; ?></center></h2>
 				<?php
 				$result = getQuestion($_GET['number']);
-				while($row = mysql_fetch_array($result)) {
-					echo "<br><div class='well'>";
-					echo $row['question'];
-					echo "</div>";
-					$deadlineC = $row['deadlineC'];
-				}
+				
 				
 				?>
-			<center><button type='submit' onclick="window.location='./editExercise.php?number=<?php echo $_GET['number']; ?>'" class='btn btn-primary'><i class='icon-edit'></i> Edit Exercise</button>
-			<button type="button" class="btn" onclick="window.location='./index.php'"><i class="icon-trash"></i> Cancel</button></center>
+			<center><button type='submit' onclick="window.location='./exerciseDisplay.php?number=<?php echo $_GET['number']; ?>'" class='btn btn-primary'><i class='icon-edit'></i> Done </button></center>
         </div>
         <!-- Load JS -->
         <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
