@@ -7,10 +7,14 @@
     @mysql_select_db($PROJECT_BASE, $con);
 
     function mkdt($DT) {
-        return date('Y-m-d H:i:s', strtotime($DT));
+    	if($DT == "")
+    		return "NULL";
+        return "'" . date('Y-m-d H:i:s', strtotime($DT)) . "'";
     }
 
     function bkdt($DT) {
+    	if($DT == NULL)
+    		return "";
         return date('m/d/Y H:i', strtotime($DT));
     }
 
@@ -108,14 +112,14 @@
         $maxEN = 1;
         while($row = @mysql_fetch_array($result))
             $maxEN = $row[0]+1;
-        $query = "INSERT INTO exercise VALUES(%d, %s, '%s', '%s', NOW(), %s, '%s', '%s', '%s', '%s', 0)";
+        $query = "INSERT INTO exercise VALUES(%d, %s, '%s', '%s', NOW(), %s, %s, %s, %s, '%s', 0)";
         return @mysql_query(sprintf($query, $maxEN, $CHC, mysql_escape_string($createdBy), mysql_escape_string($question), $MM, mkdt($DA), mkdt($DB), mkdt($DC), $response));
     }
 
     function updateExerciseCode($EN, $CHC, $createdBy, $question, $MM, $DA, $DB, $DC, $response) {
         $query = "DELETE FROM exercise WHERE exerciseCode = %d AND courseHistoryCode = %d";
         @mysql_query(sprintf($query, $EN, $CHC));
-        $query = "INSERT INTO exercise VALUES(%d, %s, '%s', '%s', NOW(), %s, '%s', '%s', '%s', '%s', 0)";
+        $query = "INSERT INTO exercise VALUES(%d, %s, '%s', '%s', NOW(), %s, %s, %s, %s, '%s', 0)";
         return @mysql_query(sprintf($query, $EN, $CHC, mysql_escape_string($createdBy), mysql_escape_string($question), $MM, mkdt($DA), mkdt($DB), mkdt($DC), $response));
     }
 
@@ -142,4 +146,19 @@
     function getFirstPendingSubmissionCheck() {
         $query = "SELECT * FROM submission WHERE isEvaluated IS NULL LIMIT 1";
         return @mysql_fetch_assoc(@mysql_query($query));
+    }
+    
+    function submitQuery($CHC, $EXN, $query){
+    	$insertquery = "INSERT INTO submission VALUES(%d, %d, '%s', NOW(), '%s', NULL, NULL)";
+    	return @mysql_query(sprintf($insertquery, $EXN, $CHC, mysql_escape_string($query), mysql_escape_string($_SESSION['iXD_UId'])));
+    }
+    
+    function getSubmissions($CHC, $EXN){
+		 $query = "SELECT * FROM submission WHERE courseHistoryCode = %s AND exerciseCode = %s"; 
+		 return @mysql_query(sprintf($query, $CHC, $EXN));  
+    }
+    
+     function getProfileInfo($UN) {
+        $query = "SELECT * FROM members WHERE realFullName = '%s'";
+        return mysql_query(sprintf($query, $UN));    
     }
