@@ -1,8 +1,8 @@
 <?php
-require_once("../config.php") ;
-require_once("../lib/AUTH.php");
-require_once("../lib/DB.php");
-ensureLoggedIn("S");
+	require_once("../config.php") ;
+	require_once("../lib/AUTH.php");
+	require_once("../lib/DB.php");
+	ensureLoggedIn("S");
 ?>
 <!doctype html>
 <html lang="en">
@@ -50,30 +50,30 @@ ensureLoggedIn("S");
         <div class="container">
             <h2 style="border-bottom: solid #ddd 1px;"><center>Exercise-<?php echo $_GET['number']; ?></center></h2>
 				<?php
-				$result = getQuestion($_GET['number']);
+					$result = getQuestion($_GET['code'], $_GET['number']);
 				
-				while($row = mysql_fetch_array($result)) {
-					echo "<br><div class='alert alert-success'><table width='100%'><tr>";
-					if($row['maximumMarks'] != NULL)
-						echo "<td><b>Maximum Marks : </b>".$row['maximumMarks']."</td>";
-					if($row['deadlineA'] != NULL)
-						echo "<td><b>Deadline-A : </b>".$row['deadlineA']."</td>";
-					if($row['deadlineB'] != NULL)
-						echo "<td><b>Deadline-B : </b>".$row['deadlineB']."</td>";
-					if($row['deadlineC'] != NULL)
-						echo "<td><b>Deadline-C : </b>".$row['deadlineC']."</td>";
-					echo "</tr></table></div><br>";
-					echo "<div class='well'>";
-					echo $row['question'];
+					echo "<div class='row-fluid'>";
+					if($result['maximumMarks'] != NULL)
+						echo "<div class='span3 alert alert-info'><b>Maximum Marks : </b>".$result['maximumMarks']."</div>";
+					if($result['deadlineA'] != NULL)
+						echo "<div class='span3 alert alert-error'><b>Deadline-A : </b>".bkdt($result['deadlineA'])."</div>";
+					if($result['deadlineB'] != NULL)
+						echo "<div class='span3 alert alert-warning'><b>Deadline-B : </b>".bkdt($result['deadlineB'])."</div>";
+					if($result['deadlineC'] != NULL)
+						echo "<div class='span3 alert alert-success'><b>Deadline-C : </b>".bkdt($result['deadlineC'])."</div>";
 					echo "</div>";
-					$deadlineC = $row['deadlineC'];
-				}
-				if($deadlineC == NULL || strtotime($deadlineC) > time()) {
-					echo "<center>";
-					echo "<form action='submit.php' method='post'><h3>Query</h3><br>";
-					echo "<textarea cols='100' rows='5' class='input-xxlarge' id='query' name='query' ></textarea><br>";
-					echo "<button type='submit' class='btn btn-primary'><i class='icon-check'></i> Submit</button></form></center>";
-				}
+				
+					echo "<div class='well'>";
+					echo $result['question'];
+					echo "</div>";
+				
+					$deadlineC = $result['deadlineC'];
+					if($deadlineC == NULL || strtotime($deadlineC) > time()) {
+						echo "<center><br>
+						<form action='submission.php' method='post'><h3>~ Submission ~</h3>
+						<textarea cols='50' rows='3' class='input input-block-level' id='query' name='query' placeholder='Enter your SQL query here...'></textarea><br>
+						<button type='submit' class='btn btn-primary'><i class='icon-check'></i> Submit your solution</button></form></center>";
+					}
 				?>
         </div>
         <!-- Load JS -->

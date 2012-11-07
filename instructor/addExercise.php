@@ -1,13 +1,36 @@
 <?php
-    require("../config.php") ;
-    require("../lib/AUTH.php");
+    require_once("../lib/DB.php");
+    require_once("../lib/AUTH.php");
     ensureLoggedIn("I");
+    $ADD = "Add New Exercise";
     
+    $result = NULL;
+    if(isset($_POST['question'])) {
+		$question = $_POST['question'];
+		$response = $_POST['response'];
+		$MM = $_POST['maxmarks']; 
+		$createdBy = $_SESSION['iXD_UId'];
+		$CHC = $_GET['code'];
+		$DA = $_POST['deadlineA'];
+		$DB = $_POST['deadlineB'];
+		$DC = $_POST['deadlineC'];
+		
+		if(!isset($_GET['number']))
+			$result = addExerciseCode($CHC, $createdBy, $question, $MM, $DA, $DB, $DC, $response);
+		else
+			$result = updateExerciseCode($_GET['number'], $CHC, $createdBy, $question, $MM, $DA, $DB, $DC, $response);
+			
+		header("Location: ./exercise.php?code=".$CHC);
+    } else if(isset($_GET['number'])) {
+    	$ADD = "Edit Exercise";
+    	$result = getQuestion($_GET['code'],$_GET['number']);
+    }
 ?>
 <!doctype html>
 <html lang="en">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="../css/jquery-ui-1.9.1.custom.css"/>
         <link rel="stylesheet" type="text/css" href="../css/jquery-ui-timepicker-addon.css"/>
         <link rel="stylesheet" type="text/css" href="../css/ixdata.css"/>
         <link rel="stylesheet" type="text/css" href="../css/font-awesome.css"/>
@@ -50,60 +73,66 @@
             </div>
         </div>
         <div class="container">
-            <h2 style="border-bottom: solid #ddd 1px;">Add New Exercise</h2>
-            <form class="form-horizontal"  action="addExercise.php" method="POST" onSubmit="return validateExerciseInfo()">
+            <h2 style="border-bottom: solid #ddd 1px;"><?php echo $ADD;?></h2>
+            <form class="form-horizontal"  action="addExercise.php<?php if(isset($_GET['number'])) echo '?code='.$_GET['code'].'&number='.$_GET['number']; else echo '?code='.$_GET['code']; ?>" method="POST" onSubmit="return validateExerciseInfo()">
                 <fieldset>
-                    <h4>Exercise Details:</h4>
                     <div class="control-group">
-                        <label class="control-label" for="courseName">Question</label>
+                        <label class="control-label" for="question">Question</label>
                         <div class="controls">
                             <div class="input-prepend">
                                 <span class="add-on"><i class="icon-book icon-large"></i></span>
-                                <textarea cols="50" rows="5" class="input-xxlarge" id="question" name="question" placeholder="Write an sql query for ...?"></textarea>;
+                                <textarea cols="50" rows="5" class="input-xxlarge" id="question" name="question" placeholder="Write an sql query for ...?"><?php if($result != NULL) echo $result['question']; ?></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="rollno">Maximum Marks</label>
+                        <label class="control-label" for="response">Correct Response</label>
+                        <div class="controls">
+                            <div class="input-prepend">
+                                <span class="add-on"><i class="icon-book icon-large"></i></span>
+                                <textarea cols="50" rows="3" class="input-xxlarge" id="response" name="response" placeholder="One possible valid response"><?php if($result != NULL) echo $result['correctResponse']; ?></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="maxmarks">Maximum Marks</label>
                         <div class="controls">
                             <div class="input-prepend">
                                 <span class="add-on"><i class="icon-star icon-large"></i></span>
-                                <input type="text" class="input" id="maxmarks" name="maxmarks">
+                                <input type="text" class="input" id="maxmarks" name="maxmarks" value="<?php if($result != NULL) echo $result['maximumMarks']; ?>">
                             </div>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="rollno">DeadlineA</label>
+                        <label class="control-label" for="deadlineA">DeadlineA</label>
                         <div class="controls">
                             <div class="input-prepend">
                                 <span class="add-on"><i class="icon-time icon-large"></i></span>
-                                <input type="text" class="input" id="deadlineA" name="deadlineA">
+                                <input type="text" class="input" id="deadlineA" name="deadlineA" value="<?php if($result != NULL) if($result['deadlineA'] != NULL) echo bkdt($result['deadlineA']); ?>">
                             </div>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="rollno">DeadlineB</label>
+                        <label class="control-label" for="deadlineB">DeadlineB</label>
                         <div class="controls">
                             <div class="input-prepend">
                                 <span class="add-on"><i class="icon-time icon-large"></i></span>
-                                <input type="text" class="input" id="deadlineB" name="deadlineB">
+                                <input type="text" class="input" id="deadlineB" name="deadlineB" value="<?php if($result != NULL) if($result['deadlineB'] != NULL) echo bkdt($result['deadlineB']); ?>">
                             </div>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="rollno">DeadlineC</label>
+                        <label class="control-label" for="deadlineC">DeadlineC</label>
                         <div class="controls">
                             <div class="input-prepend">
                                 <span class="add-on"><i class="icon-time icon-large"></i></span>
-                                <input type="text" class="input" id="deadlineC" name="deadlineC">
+                                <input type="text" class="input" id="deadlineC" name="deadlineC" value="<?php if($result != NULL) if($result['deadlineC'] != NULL) echo bkdt($result['deadlineC']); ?>">
                             </div>
                         </div>
                     </div>
-                    
-                    <input type="hidden" class="input" id="CHC" name="CHC" value="<?php echo $_GET['code'];?>">
 
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary"><i class="icon-check"></i>Add Exercise</button>
+                        <button type="submit" class="btn btn-primary"><i class="icon-check"></i><?php echo $ADD;?></button>
                         <button type="button" class="btn" onclick="window.location='./'"><i class="icon-trash"></i> Cancel</button>
                     </div>
                 </fieldset>
