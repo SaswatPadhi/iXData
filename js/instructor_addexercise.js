@@ -1,5 +1,7 @@
 $(function() {
 	$('#deadlineA').datetimepicker();
+	$('#deadlineB').datetimepicker();
+	$('#deadlineC').datetimepicker();
 });
 
 
