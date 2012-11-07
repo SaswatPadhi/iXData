@@ -96,13 +96,14 @@
         <div class="container">
             <h2 style="border-bottom: solid #ddd 1px;">Registered new course..</h2>
             <?php
-                /*if(!$courseAdded)
+                if(!$courseAdded)
                     echo "<div class='alert alert-error'> Course code could not be registered!</div>";
                 if(!$courseHistoryAdded)
                     echo "<div class='alert alert-error'> Course could not be registered for this sem!</div>";
                 if(!$courseInstructorAdded)
                     echo "<div class='alert alert-error'> You could not be registered as the course instructor!</div>";
-				echo "<div class='alert alert-success'> Students for the course ".$courseCode." are registered Successfully!</div>";*/
+                if($courseAdded && $courseHistoryAdded && $courseInstructorAdded)
+					echo "<div class='alert alert-success'> Students for the course ".$courseCode." are registered Successfully!</div>";
             ?>
             <center><button type="button" class="btn btn-primary" onclick="window.location='./addCourse.php'"><i class="icon-arrow-left"></i> Back</button></center>
         </div>

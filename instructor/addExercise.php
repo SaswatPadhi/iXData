@@ -2,6 +2,7 @@
     require("../config.php") ;
     require("../lib/AUTH.php");
     ensureLoggedIn("I");
+    
 ?>
 <!doctype html>
 <html lang="en">
@@ -50,7 +51,7 @@
         </div>
         <div class="container">
             <h2 style="border-bottom: solid #ddd 1px;">Add New Exercise</h2>
-            <form class="form-horizontal"  action="added.php" method="POST" onSubmit="return validateExerciseInfo()">
+            <form class="form-horizontal"  action="addExercise.php" method="POST" onSubmit="return validateExerciseInfo()">
                 <fieldset>
                     <h4>Exercise Details:</h4>
                     <div class="control-group">
