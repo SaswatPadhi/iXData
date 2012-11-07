@@ -38,7 +38,6 @@
     	$roll = $rollNumbers[$i];
     	if($roll != "") {
 			$result = @ldap_find($roll);
-			echo $result;
 			if($result) {
 		        $studentAddedLog[$roll] = addStudentInfo($result['employeenumber'][0], $result['uid'][0], $result['givenname'][0], $result['mail'][0]);
 		        $studentCourseLog[$roll] = addStudentCourse($courseHistoryAdded, $result['uid'][0]);

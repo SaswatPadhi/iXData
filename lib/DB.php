@@ -5,6 +5,17 @@
     if(!$con)
         return false;
     @mysql_select_db($PROJECT_BASE, $con);
+    
+    function mkdt($DT) {
+    	return date('Y-m-d H:i:s', strtotime($DT));
+    }
+    
+    function bkdt($DT) {
+    	return date('m/d/Y H:i', strtotime($DT));
+    }
+
+    
+    
 
     function isMember() {
         $query = "SELECT * FROM members WHERE usernameLDAP = '%s'";
@@ -44,13 +55,13 @@
         return @mysql_query(sprintf($query, mysql_escape_string($CC), mysql_escape_string($CN)));
     }
 
-    function addCourseHistory($CHC) {
+    function addCourseHistory($CC) {
         $query = "SELECT MAX(courseHistoryCode) FROM courseHistory";
         $result = @mysql_query($query);
         while($row = @mysql_fetch_array($result))
             $maxHistoryCode = $row[0]+1;
-        $query = "INSERT INTO courseHistory VALUES(%d, %s, CEIL(MONTH(NOW())/6), YEAR(NOW()))";
-        if(@mysql_query(sprintf($query, $maxHistoryCode, $CHC)))
+        $query = "INSERT INTO courseHistory VALUES(%d, '%s', CEIL(MONTH(NOW())/6), YEAR(NOW()))";
+        if(@mysql_query(sprintf($query, $maxHistoryCode, mysql_escape_string($CC))))
             return $maxHistoryCode;
         return false;
     }
@@ -91,19 +102,26 @@
         return false;
     }
     
-    function addExerciseCode($CHC,$question,$createdBy,$MM) {
+    function addExerciseCode($CHC, $createdBy, $question, $MM, $DA, $DB, $DC, $response) {
         $query = "SELECT MAX(exerciseCode) FROM exercise WHERE courseHistoryCode=%d";
         $result = @mysql_query(sprintf($query,$CHC));
         $maxEN = 1;
         while($row = @mysql_fetch_array($result))
             $maxEN = $row[0]+1;
-        $query = "INSERT INTO exercise VALUES(%d, %s, '%s', '%s', NOW(), %s, NULL, NULL, NULL)";
-        return @mysql_query(sprintf($query, $maxEN, $CHC, mysql_escape_string($createdBy), mysql_escape_string($question), $MM));
+        $query = "INSERT INTO exercise VALUES(%d, %s, '%s', '%s', NOW(), %s, '%s', '%s', '%s', '%s', 0)";
+        return @mysql_query(sprintf($query, $maxEN, $CHC, mysql_escape_string($createdBy), mysql_escape_string($question), $MM, mkdt($DA), mkdt($DB), mkdt($DC), $response));
     }
     
-    function getQuestion($EN) {
-    	$query = "SELECT question,maximumMarks,deadlineA,deadlineB,deadlineC FROM exercise WHERE exerciseCode=%d";	
-    	return @mysql_query(sprintf($query, $EN));
+    function updateExerciseCode($EN, $CHC, $createdBy, $question, $MM, $DA, $DB, $DC, $response) {
+    	$query = "DELETE FROM exercise WHERE exerciseCode = %d AND courseHistoryCode = %d";
+    	@mysql_query(sprintf($query, $EN, $CHC));
+        $query = "INSERT INTO exercise VALUES(%d, %s, '%s', '%s', NOW(), %s, '%s', '%s', '%s', '%s', 0)";
+        return @mysql_query(sprintf($query, $EN, $CHC, mysql_escape_string($createdBy), mysql_escape_string($question), $MM, mkdt($DA), mkdt($DB), mkdt($DC), $response));
+    }
+    
+    function getQuestion($CHC,$EXN) {
+    	$query = "SELECT * FROM exercise WHERE exerciseCode=%d AND courseHistoryCode=%s";	
+    	return @mysql_fetch_assoc(@mysql_query(sprintf($query, $EXN, $CHC)));
     }
     
     function getTeacherAndCourses() {
