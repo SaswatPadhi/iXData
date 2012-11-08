@@ -69,11 +69,11 @@
                         echo bkdt($row['deadlineC']) . " &nbsp; &nbsp; ";
                     echo "</div><div class='span1'>";
                     if($row['dataSetGenerated'] == '0')
-                    	echo "<i class='icon-upload-alt icon-large'></i>";
-                	else if($row['dataSetGenerated'] == '1')
-                		echo "<i class='icon-cogs icon-large'></i>";
-                	else if($row['dataSetGenerated'] == '2')
-                		echo "<i class='icon-ok icon-large'></i>";
+                        echo "<i class='icon-upload-alt icon-large'></i>";
+                    else if($row['dataSetGenerated'] == '-1')
+                        echo "<i class='icon-cogs icon-large'></i>";
+                    else
+                        echo "<i class='icon-ok icon-large'></i> (" . $row['dataSetGenerated'] . ")";
                     echo "</div>";
                     echo "</a></div>";
                 }

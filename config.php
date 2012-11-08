@@ -18,3 +18,5 @@
         $PROJECT_USER = "iXData_Project";
         $PROJECT_PASS = "iXDataPass";
     }
+
+    require_once dirname(__FILE__) .'/lib/XDATA.php';

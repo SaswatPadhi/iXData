@@ -1,6 +1,6 @@
 <?php
-    require("../config.php") ;
-    require("../lib/AUTH.php");
+    require_once("../config.php") ;
+    require_once("../lib/AUTH.php");
     ensureLoggedIn("I");
 ?>
 <!doctype html>
@@ -48,24 +48,24 @@
             </div>
         </div>
         <div class="container">
-        	<div class="row">
-        		<div class="offset2 span8">
-               	<h2 style="border-bottom: solid #ddd 1px;"><center>Profile Info</center></h2>
-            		<center><table class='table table-striped table-bordered table-condensed'>
-					<?php
-					require("../lib/DB.php");
-					$UName = $_SESSION['iXD_UName'];
-					$result = getProfileInfo($UName);
-					while($row = mysql_fetch_array($result)) {
-						echo "<tr><td><h3><b>Employee Number</b></h3></td><td><h4>".$row['employeeNumber']."</h4></td></tr>";
-						echo "<tr><td><h3><b>User Name</b></h3></td><td><h4>".$row['usernameLDAP']."</h4></td></tr>";
-						echo "<tr><td><h3><b>Student Full Name</b></h3></td><td><h4>".$row['realFullName']."</h4></td></tr>";
-						echo "<tr><td><h3><b>GPO ID</b></h3></td><td><h4>".$row['mailID_GPO']."</h4></td></tr>";
-					}
-					?> 
-					</table></center>     
-				</div>    
-        	</div>
+            <div class="row">
+                <div class="offset2 span8">
+                   <h2 style="border-bottom: solid #ddd 1px;"><center>Profile Info</center></h2>
+                    <center><table class='table table-striped table-bordered table-condensed'>
+                    <?php
+                    require_once("../lib/DB.php");
+                    $UName = $_SESSION['iXD_UName'];
+                    $result = getProfileInfo($UName);
+                    while($row = mysql_fetch_array($result)) {
+                        echo "<tr><td><h3><b>Employee Number</b></h3></td><td><h4>".$row['employeeNumber']."</h4></td></tr>";
+                        echo "<tr><td><h3><b>User Name</b></h3></td><td><h4>".$row['usernameLDAP']."</h4></td></tr>";
+                        echo "<tr><td><h3><b>Student Full Name</b></h3></td><td><h4>".$row['realFullName']."</h4></td></tr>";
+                        echo "<tr><td><h3><b>GPO ID</b></h3></td><td><h4>".$row['mailID_GPO']."</h4></td></tr>";
+                    }
+                    ?>
+                    </table></center>
+                </div>
+            </div>
         </div>
         <!-- Load JS -->
         <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>

@@ -7,14 +7,14 @@
     @mysql_select_db($PROJECT_BASE, $con);
 
     function mkdt($DT) {
-    	if($DT == "")
-    		return "NULL";
+        if($DT == "")
+            return "NULL";
         return "'" . date('Y-m-d H:i:s', strtotime($DT)) . "'";
     }
 
     function bkdt($DT) {
-    	if($DT == NULL)
-    		return "";
+        if($DT == NULL)
+            return "";
         return date('m/d/Y H:i', strtotime($DT));
     }
 
@@ -23,7 +23,7 @@
 
     function isMember() {
         $query = "SELECT * FROM members WHERE usernameLDAP = '%s'";
-        return (@mysql_num_rows(@mysql_query(sprintf($query, mysql_escape_string($_SESSION['iXD_UId'])))) != 0);
+        return (@mysql_num_rows(@mysql_query(sprintf($query, mysql_real_escape_string($_SESSION['iXD_UId'])))) != 0);
     }
 
     function addMember($EN, $UID, $FN, $MAIL, $T) {
@@ -41,12 +41,12 @@
 
     function getStudentCourses() {
         $query = "SELECT course.courseCode, course.courseName, courseHistory.courseHistoryCode FROM (courseHistory INNER JOIN courseTaker USING (courseHistoryCode)) INNER JOIN course USING(courseCode) WHERE courseTaker.usernameLDAP = '%s'";
-        return @mysql_query(sprintf($query, mysql_escape_string($_SESSION['iXD_UId'])));
+        return @mysql_query(sprintf($query, mysql_real_escape_string($_SESSION['iXD_UId'])));
     }
 
     function getInstructorCourses() {
         $query = "SELECT usernameLDAP, realFullName, courseCode, courseName,courseHistoryCode FROM ((instructor INNER JOIN courseTeacher USING(usernameLDAP)) INNER JOIN (courseHistory INNER JOIN course USING(courseCode)) USING(courseHistoryCode)) WHERE usernameLDAP= '%s'";
-        return @mysql_query(sprintf($query, mysql_escape_string($_SESSION['iXD_UId'])));
+        return @mysql_query(sprintf($query, mysql_real_escape_string($_SESSION['iXD_UId'])));
     }
 
     function getCourseExercises($CHC) {
@@ -56,7 +56,7 @@
 
     function addCourse($CC,$CN) {
         $query = "INSERT INTO course VALUES('%s', '%s')";
-        return @mysql_query(sprintf($query, mysql_escape_string($CC), mysql_escape_string($CN)));
+        return @mysql_query(sprintf($query, mysql_real_escape_string($CC), mysql_real_escape_string($CN)));
     }
 
     function addCourseHistory($CC) {
@@ -65,34 +65,34 @@
         while($row = @mysql_fetch_array($result))
             $maxHistoryCode = $row[0]+1;
         $query = "INSERT INTO courseHistory VALUES(%d, '%s', CEIL(MONTH(NOW())/6), YEAR(NOW()))";
-        if(@mysql_query(sprintf($query, $maxHistoryCode, mysql_escape_string($CC))))
+        if(@mysql_query(sprintf($query, $maxHistoryCode, mysql_real_escape_string($CC))))
             return $maxHistoryCode;
         return false;
     }
 
     function addInstructorCourse($CHC) {
         $query = "INSERT INTO courseTeacher VALUES(%d, '%s')";
-        return @mysql_query(sprintf($query, $CHC, mysql_escape_string($_SESSION['iXD_UId'])));
+        return @mysql_query(sprintf($query, $CHC, mysql_real_escape_string($_SESSION['iXD_UId'])));
     }
 
     function addStudentInfo($EN, $UID, $FN, $MAIL) {
         $query = "INSERT INTO student VALUES('%s', '%s', '%s', '%s')";
-        return @mysql_query(sprintf($query, mysql_escape_string($EN), mysql_escape_string($UID), mysql_escape_string($FN), mysql_escape_string($MAIL)));
+        return @mysql_query(sprintf($query, mysql_real_escape_string($EN), mysql_real_escape_string($UID), mysql_real_escape_string($FN), mysql_real_escape_string($MAIL)));
     }
 
     function addInstructorInfo($EN, $UID, $FN, $MAIL) {
         $query = "INSERT INTO instructor VALUES('%s', '%s', '%s', '%s')";
-        return @mysql_query(sprintf($query, mysql_escape_string($EN), mysql_escape_string($UID), mysql_escape_string($FN), mysql_escape_string($MAIL)));
+        return @mysql_query(sprintf($query, mysql_real_escape_string($EN), mysql_real_escape_string($UID), mysql_real_escape_string($FN), mysql_real_escape_string($MAIL)));
     }
 
     function addStudentCourse($CHC, $UID) {
         $query = "INSERT INTO courseTaker VALUES(%d, '%s')";
-        return mysql_query(sprintf($query, $CHC, mysql_escape_string($UID)));
+        return mysql_query(sprintf($query, $CHC, mysql_real_escape_string($UID)));
     }
 
     function isCourseRunningThisSem($CC) {
         $query = "SELECT courseHistoryCode FROM courseHistory WHERE courseCode = '%s' AND year = YEAR(NOW()) AND semester = CEIL(MONTH(NOW())/6)";
-        $result = @mysql_query(sprintf($query, mysql_escape_string($CC)));
+        $result = @mysql_query(sprintf($query, mysql_real_escape_string($CC)));
         while($row = @mysql_fetch_array($result))
             return true;
         return false;
@@ -100,7 +100,7 @@
 
     function courseExists($CC) {
         $query = "SELECT * FROM course WHERE courseCode = '%s'";
-        $result = @mysql_query(sprintf($query, mysql_escape_string($CC)));
+        $result = @mysql_query(sprintf($query, mysql_real_escape_string($CC)));
         while($row = @mysql_fetch_array($result))
             return true;
         return false;
@@ -113,14 +113,18 @@
         while($row = @mysql_fetch_array($result))
             $maxEN = $row[0]+1;
         $query = "INSERT INTO exercise VALUES(%d, %s, '%s', '%s', NOW(), %s, %s, %s, %s, '%s', 0)";
-        return @mysql_query(sprintf($query, $maxEN, $CHC, mysql_escape_string($createdBy), mysql_escape_string($question), $MM, mkdt($DA), mkdt($DB), mkdt($DC), $response));
+        if($MM == "")
+            $MM = "NULL";
+        return @mysql_query(sprintf($query, $maxEN, $CHC, mysql_real_escape_string($createdBy), mysql_real_escape_string($question), $MM, mkdt($DA), mkdt($DB), mkdt($DC), mysql_real_escape_string($response)));
     }
 
     function updateExerciseCode($EN, $CHC, $createdBy, $question, $MM, $DA, $DB, $DC, $response) {
         $query = "DELETE FROM exercise WHERE exerciseCode = %d AND courseHistoryCode = %d";
         @mysql_query(sprintf($query, $EN, $CHC));
         $query = "INSERT INTO exercise VALUES(%d, %s, '%s', '%s', NOW(), %s, %s, %s, %s, '%s', 0)";
-        return @mysql_query(sprintf($query, $EN, $CHC, mysql_escape_string($createdBy), mysql_escape_string($question), $MM, mkdt($DA), mkdt($DB), mkdt($DC), $response));
+        if($MM == "")
+            $MM = "NULL";
+        return @mysql_query(sprintf($query, $EN, $CHC, mysql_real_escape_string($createdBy), mysql_real_escape_string($question), $MM, mkdt($DA), mkdt($DB), mkdt($DC), mysql_real_escape_string($response)));
     }
 
     function getQuestion($CHC,$EXN) {
@@ -138,6 +142,15 @@
         return @mysql_query(sprintf($query, $DSG, $EX, $CHC));
     }
 
+    function updateSubmissionStatus($EX, $CHC, $TS, $IEV) {
+        $query = "SELECT * FROM exercise WHERE exerciseCode=%d AND courseHistoryCode=%s";
+        $EXN = @mysql_fetch_assoc(@mysql_query(sprintf($query, $EX, $CHC)));
+        $CC = count_chars($IEV);
+        $MO = (intval($EXN['maximumMarks']) * $CC[ord('1')]) / strlen($IEV);
+        $query = "UPDATE submission SET isEvaluated = '%s', marksObtained = %d WHERE exerciseCode = %d AND courseHistoryCode = %d AND submittedOn = '%s'";
+        return @mysql_query(sprintf($query, $IEV, $MO, $EX, $CHC, $TS));
+    }
+
     function getFirstPendingDataSetJob() {
         $query = "SELECT * FROM exercise WHERE dataSetGenerated = 0 LIMIT 1";
         return @mysql_fetch_assoc(@mysql_query($query));
@@ -147,18 +160,18 @@
         $query = "SELECT * FROM submission WHERE isEvaluated IS NULL LIMIT 1";
         return @mysql_fetch_assoc(@mysql_query($query));
     }
-    
+
     function submitQuery($CHC, $EXN, $query){
-    	$insertquery = "INSERT INTO submission VALUES(%d, %d, '%s', NOW(), '%s', NULL, NULL)";
-    	return @mysql_query(sprintf($insertquery, $EXN, $CHC, mysql_escape_string($query), mysql_escape_string($_SESSION['iXD_UId'])));
+        $insertquery = "INSERT INTO submission VALUES(%d, %d, '%s', NOW(), '%s', NULL, NULL)";
+        return @mysql_query(sprintf($insertquery, $EXN, $CHC, mysql_real_escape_string($query), mysql_real_escape_string($_SESSION['iXD_UId'])));
     }
-    
+
     function getSubmissions($CHC, $EXN){
-		 $query = "SELECT * FROM submission WHERE courseHistoryCode = %s AND exerciseCode = %s"; 
-		 return @mysql_query(sprintf($query, $CHC, $EXN));  
+        $query = "SELECT * FROM submission WHERE courseHistoryCode = %s AND exerciseCode = %s ORDER BY submittedOn DESC";
+        return @mysql_query(sprintf($query, $CHC, $EXN));
     }
-    
+
      function getProfileInfo($UN) {
         $query = "SELECT * FROM members WHERE realFullName = '%s'";
-        return mysql_query(sprintf($query, $UN));    
+        return mysql_query(sprintf($query, $UN));
     }

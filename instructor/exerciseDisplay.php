@@ -1,8 +1,8 @@
 <?php
-require_once("../config.php") ;
-require_once("../lib/AUTH.php");
-require_once("../lib/DB.php");
-ensureLoggedIn("I");
+    require_once("../config.php") ;
+    require_once("../lib/AUTH.php");
+    require_once("../lib/DB.php");
+    ensureLoggedIn("I");
 ?>
 <!doctype html>
 <html lang="en">
@@ -50,26 +50,26 @@ ensureLoggedIn("I");
         </div>
         <div class="container">
             <h2 style="border-bottom: solid #ddd 1px;"><center>Exercise-<?php echo $_GET['number']; ?></center></h2>
-				<?php
-					$result = getQuestion($_GET['code'],$_GET['number']);
-					
-					echo "<div class='row-fluid'>";
-					if($result['maximumMarks'] != NULL)
-						echo "<div class='span3 alert alert-info'><b>Maximum Marks : </b>".$result['maximumMarks']."</div>";
-					if($result['deadlineA'] != NULL)
-						echo "<div class='span3 alert alert-error'><b>Deadline-A : </b>".bkdt($result['deadlineA'])."</div>";
-					if($result['deadlineB'] != NULL)
-						echo "<div class='span3 alert alert-warning'><b>Deadline-B : </b>".bkdt($result['deadlineB'])."</div>";
-					if($result['deadlineC'] != NULL)
-						echo "<div class='span3 alert alert-success'><b>Deadline-C : </b>".bkdt($result['deadlineC'])."</div>";
-					echo "</div>";
-				
-					echo "<div class='well'>";
-					echo $result['question'];
-					echo "</div>";
-				?>
-			<center><button type='button' onclick="window.location='./addExercise.php?code=<?php echo $_GET['code']; ?>&number=<?php echo $_GET['number']; ?>'" class='btn btn-primary'><i class='icon-edit'></i> Edit Exercise</button>
-			<button type="button" class="btn" onclick="window.location='./index.php'"><i class="icon-trash"></i> Cancel</button></center>
+                <?php
+                    $result = getQuestion($_GET['code'],$_GET['number']);
+
+                    echo "<div class='row-fluid'>";
+                    if($result['maximumMarks'] != NULL)
+                        echo "<div class='span3 alert alert-info'><b>Maximum Marks : </b>".$result['maximumMarks']."</div>";
+                    if($result['deadlineA'] != NULL)
+                        echo "<div class='span3 alert alert-error'><b>Deadline-A : </b>".bkdt($result['deadlineA'])."</div>";
+                    if($result['deadlineB'] != NULL)
+                        echo "<div class='span3 alert alert-warning'><b>Deadline-B : </b>".bkdt($result['deadlineB'])."</div>";
+                    if($result['deadlineC'] != NULL)
+                        echo "<div class='span3 alert alert-success'><b>Deadline-C : </b>".bkdt($result['deadlineC'])."</div>";
+                    echo "</div>";
+
+                    echo "<div class='well'>";
+                    echo $result['question'];
+                    echo "</div>";
+                ?>
+            <center><button type='button' onclick="window.location='./addExercise.php?code=<?php echo $_GET['code']; ?>&number=<?php echo $_GET['number']; ?>'" class='btn btn-primary'><i class='icon-edit'></i> Edit Exercise</button>
+            <button type="button" class="btn" onclick="window.location='./index.php'"><i class="icon-trash"></i> Cancel</button></center>
         </div>
         <!-- Load JS -->
         <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>

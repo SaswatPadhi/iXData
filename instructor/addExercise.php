@@ -3,27 +3,27 @@
     require_once("../lib/AUTH.php");
     ensureLoggedIn("I");
     $ADD = "Add New Exercise";
-    
+
     $result = NULL;
     if(isset($_POST['question'])) {
-		$question = $_POST['question'];
-		$response = $_POST['response'];
-		$MM = $_POST['maxmarks']; 
-		$createdBy = $_SESSION['iXD_UId'];
-		$CHC = $_GET['code'];
-		$DA = $_POST['deadlineA'];
-		$DB = $_POST['deadlineB'];
-		$DC = $_POST['deadlineC'];
-		
-		if(!isset($_GET['number']))
-			$result = addExerciseCode($CHC, $createdBy, $question, $MM, $DA, $DB, $DC, $response);
-		else
-			$result = updateExerciseCode($_GET['number'], $CHC, $createdBy, $question, $MM, $DA, $DB, $DC, $response);
-			
-		header("Location: ./exercise.php?code=".$CHC);
+        $question = $_POST['question'];
+        $response = $_POST['response'];
+        $MM = $_POST['maxmarks'];
+        $createdBy = $_SESSION['iXD_UId'];
+        $CHC = $_GET['code'];
+        $DA = $_POST['deadlineA'];
+        $DB = $_POST['deadlineB'];
+        $DC = $_POST['deadlineC'];
+
+        if(!isset($_GET['number']))
+            $result = addExerciseCode($CHC, $createdBy, $question, $MM, $DA, $DB, $DC, $response);
+        else
+            $result = updateExerciseCode($_GET['number'], $CHC, $createdBy, $question, $MM, $DA, $DB, $DC, $response);
+
+        header("Location: ./exercise.php?code=".$CHC);
     } else if(isset($_GET['number'])) {
-    	$ADD = "Edit Exercise";
-    	$result = getQuestion($_GET['code'],$_GET['number']);
+        $ADD = "Edit Exercise";
+        $result = getQuestion($_GET['code'],$_GET['number']);
     }
 ?>
 <!doctype html>

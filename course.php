@@ -1,9 +1,6 @@
 <?php
     require_once 'config.php';
     require_once 'lib/AUTH.php';
-
-    if(isLoggedIn("S"))         header("Location: student/");
-    else if(isLoggedIn("I"))    header("Location: instructor/");
 ?>
 <!doctype html>
 <html lang="en">
@@ -36,25 +33,25 @@
             </div>
         </div>
         <div class="container">
-        	<div class='well'>
-            	<div class="row">
-                	<div class="span12">
-                    	<center><h2>Courses Offered<h2></center><hr>
-                    	<table width="100%" >
-						<?php
-							require("lib/DB.php");
-							$result = getTeacherAndCourses();
-							echo "<tr>";
-							echo "<td><b>CourseCode</b></td><td><b>CourseName</b></td><td><b>Instructor</b></td>";
-							echo "</tr>";
-							while($row = mysql_fetch_array($result)) {
-								echo "<tr>";
-								echo "<td>".$row['courseCode']."</td><td>".$row['courseName']."</td><td>".$row['realFullName']."</td>";
-								echo "</tr>";
-							}
-						?> 
-						</table>                       
-              		</div>
+            <div class='well'>
+                <div class="row">
+                    <div class="span12">
+                        <center><h2>Courses Offered<h2></center><hr>
+                        <table width="100%" >
+                        <?php
+                            require_once("lib/DB.php");
+                            $result = getTeacherAndCourses();
+                            echo "<tr>";
+                            echo "<td><b>CourseCode</b></td><td><b>CourseName</b></td><td><b>Instructor</b></td>";
+                            echo "</tr>";
+                            while($row = mysql_fetch_array($result)) {
+                                echo "<tr>";
+                                echo "<td>".$row['courseCode']."</td><td>".$row['courseName']."</td><td>".$row['realFullName']."</td>";
+                                echo "</tr>";
+                            }
+                        ?>
+                        </table>
+                      </div>
                 </div>
             </div>
             <hr>

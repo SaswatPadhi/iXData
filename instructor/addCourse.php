@@ -1,6 +1,6 @@
 <?php
-    require("../config.php") ;
-    require("../lib/AUTH.php");
+    require_once("../config.php") ;
+    require_once("../lib/AUTH.php");
     ensureLoggedIn("I");
 ?>
 <!doctype html>
